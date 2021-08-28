@@ -5,9 +5,21 @@
 #include <RF24.h>
 #include <printf.h>
 
-RF24 radio(7,8);
+#define STM32F1
+/*-----( Declare Constants and Pin Numbers )-----*/
+#ifdef STM32F1
+#define  CE_PIN  PB1   // The pins to be used for CE and SN
+#define  CSN_PIN PB0
+#endif
 
-void setup()
+#ifdef ARDUINO_NANO // arduino pins
+#define  CE_PIN  7   // The pins to be used for CE and SN
+#define  CSN_PIN 8
+#endif
+
+RF24 radio(CE_PIN, CSN_PIN);
+
+void setup() 
 {
  while (!Serial);
  Serial.begin(9600);
