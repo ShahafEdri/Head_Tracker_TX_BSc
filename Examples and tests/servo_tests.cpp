@@ -12,13 +12,13 @@ uint8_t data=90;
 
 void setup() {
 // put your setup code here, to run once:
-servo_yaw.attach(servo_yaw_pin);//links the yaw servo pin to the library
-servo_pitch.attach(servo_pitch_pin);//links the pitch servo pin to the library
+    servo_yaw.attach(servo_yaw_pin);//links the yaw servo pin to the library
+    servo_pitch.attach(servo_pitch_pin);//links the pitch servo pin to the library
 
-servo_yaw.write(90);
-servo_pitch.write(90);
+    servo_yaw.write(90);
+    servo_pitch.write(90);
 
-pinMode(LED_BUILTIN, OUTPUT);
+    pinMode(LED_BUILTIN, OUTPUT);
 }
 
 void loop() {
