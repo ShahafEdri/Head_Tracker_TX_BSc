@@ -117,8 +117,10 @@ VectorFloat gravity;    // [x, y, z]            gravity vector
 float euler[3];         // [psi, theta, phi]    Euler angle container
 float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector
 
+#ifdef DEBUG
 uint32_t counter=0;
 float_t counter_float=0;
+#endif
 
 
 // ================================================================
