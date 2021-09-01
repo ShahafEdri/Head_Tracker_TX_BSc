@@ -91,14 +91,35 @@ MPU6050 mpu;
 // more info, see: http://en.wikipedia.org/wiki/Gimbal_lock)
 #define OUTPUT_READABLE_YAWPITCHROLL
 
-/*-----( Declare Constants and Pin (chip select) Numbers for nrf24 )-----*/
-#define  CE_PIN  7   // The pins to be used for CE and SN
-#define  CSN_PIN 8
+#define DEBUG
+#define STM32F1
+// #define ARDUINO_NANO
 
-/*-----( Declare Constants and Pin Numbers for mpu6050 IMU )-----*/
-#define INTERRUPT_PIN 2  // use pin 2 on Arduino Uno & most boards
-#define LED_PIN 13 // (Arduino is 13, Teensy is 11, Teensy++ is 6)
-#define calibration_button_pin 5// the pin of the calibration button
+#ifdef DEBUG
+uint32_t counter=0;
+float_t counter_float=0;
+#endif
+
+
+/*-----( Declare Constants and Pin Numbers )-----*/
+#ifdef STM32F1 // stm32 pins
+	// The pins to be used for CE and SN
+    #define  CE_PIN  PB1
+    #define  CSN_PIN PB0
+	/*-----( Declare Constants and Pin Numbers for mpu6050 IMU )-----*/
+	#define INTERRUPT_PIN PA2  // use pin 2 on Arduino Uno & most boards
+	#define LED_PIN LED_BUILTIN // (Arduino is 13, Teensy is 11, Teensy++ is 6)
+	#define calibration_button_pin PC14// the pin of the calibration button
+#elif #defined ARDUINO_NANO // arduino pins
+	// The pins to be used for CE and SN
+    #define  CE_PIN  7   
+    #define  CSN_PIN 8
+	/*-----( Declare Constants and Pin Numbers for mpu6050 IMU )-----*/
+	#define INTERRUPT_PIN 2  // use pin 2 on Arduino Uno & most boards
+	#define LED_PIN 13 // (Arduino is 13, Teensy is 11, Teensy++ is 6)
+	#define calibration_button_pin 5// the pin of the calibration button
+#endif
+
 bool blinkState = false;
 
 // MPU control/status vars
@@ -192,107 +213,9 @@ void dmpDataReady()
 }
 
 
-
 // ================================================================
-// ===                      INITIAL SETUP                       ===
+// ===              functions to remove code load				===
 // ================================================================
-
-void setup()
-{
-	// join I2C bus (I2Cdev library doesn't do this automatically)
-	#if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
-        Wire.begin();
-        Wire.setClock(400000); // 400kHz I2C clock. Comment this line if having compilation difficulties
-    #elif I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_FASTWIRE
-        Fastwire::setup(400, true);
-    #endif
-
-    // initialize serial communication
-    // (115200 chosen because it is required for Teapot Demo output, but it's
-    // really up to you depending on your project)
-//    Serial.begin(115200);
-
-    pinMode(calibration_button_pin, INPUT);
-
-    mpu6050_startup();	//does alot of configurations for the mpu6050 to be set correctly
-
-    nrf24_startup();	//does alot of configurations for the NRF24 to be initialized correctly
-
-    mpu6050_get_data();
-
-    Currentdeg = ypr[0] * 180/M_PI;
-    MPUDeg_2_ServoDeg(Xc_yaw,Xnc_yaw);
-    ypr[0] = Currentdeg;
-
-    Xc_pitch = Currentdeg;
-    if(Xc_yaw >= 0)
-	{
-    	Xnc_yaw = Xc_yaw - 180;
-	}
-	else if(Xc_yaw<0)
-	{
-		Xnc_yaw = Xc_yaw + 180;
-	}
-}
-
-
-
-
-
-// ================================================================
-// ===                    MAIN PROGRAM LOOP                     ===
-// ================================================================
-
-void loop()
-{
-    // if programming failed, don't try to do anything TO_DO consider taking this line out
-    if (!dmpReady)
-    {
-    	return;
-    }
-
-    // wait for MPU interrupt or extra packet(s) available
-    while (!mpuInterrupt && fifoCount < packetSize)
-    {
-		// other program behavior stuff here
-    }
-
-    mpu6050_get_data();
-
-    send_data_rf24();
-    delay(5);
-
-//    while (Serial.available() && Serial.read()); // empty buffer
-    if (digitalRead(calibration_button_pin) == 0)		// check if button was pressed to calibrate
-    {
-    	//taking messure of current degree on the yaw axis
-        Xc_yaw = ypr[0] * 180/M_PI;
-        if(Xc_yaw >= 0)
-    	{
-        	Xnc_yaw = Xc_yaw - 180;
-    	}
-    	else if(Xc_yaw<0)
-    	{
-    		Xnc_yaw = Xc_yaw + 180;
-    	}
-
-        //taking messure of current degree on the pitch axis
-        Xc_pitch = ypr[1] * 180/M_PI;
-		if(Xc_pitch >= 0)
-		{
-			Xnc_pitch = Xc_pitch - 180;
-		}
-		else if(Xc_pitch < 0)
-		{
-			Xnc_pitch = Xc_pitch + 180;
-		}
-
-
-    }
-//    while (Serial.available() && Serial.read()); // empty buffer again
-
-}
-
 
 void mpu6050_startup()
 {
@@ -353,6 +276,119 @@ void mpu6050_startup()
 
     // configure LED for output
     pinMode(LED_PIN, OUTPUT);
+}
+
+void MPUDeg_2_ServoDeg(int Xc, int Xnc)
+//a function that takes the mpu degree and
+//change it to the limitations of the servo motors
+//calbrate - put in limits of (+-90) - change from -90:90 to 0:180
+{
+	if(Xc>=0)//checks which calibrations need to be performed
+	{
+		if(Currentdeg >= -180 && Currentdeg < Xnc)
+		{
+			situation = 1;
+		}
+		else if(Currentdeg >= Xnc && Currentdeg < 0)
+		{
+			situation =2;
+		}
+		else if(Currentdeg >= 0 && Currentdeg < Xc)
+		{
+			situation = 3;
+		}
+		else if(Currentdeg >= Xc && Currentdeg < 180)
+		{
+			situation = 4;
+		}
+	}
+	else if(Xc<0)
+	{
+		if(Currentdeg >= Xnc && Currentdeg < 180)
+		{
+			situation = 1;
+		}
+		else if(Currentdeg >= 0 && Currentdeg < Xnc)
+		{
+			situation =2;
+		}
+		else if(Currentdeg >= Xc && Currentdeg < 0)
+		{
+			situation = 3;
+		}
+		else if(Currentdeg >= -180 && Currentdeg < Xc)
+		{
+			situation = 4;
+		}
+	}
+	switch(situation) // puts the calibration in the right situation
+	{
+		case 1:
+		//if positive calibration degree - current degree is between -180 and the opposite circular calibration degree (-180:Deg:Xnc)
+		//if negative calibration degree - current degree is between the opposite circular calibration degree and 180 (Xnc:Deg:180)
+		{
+			Currentdeg = abs(Xnc) + (180 - abs(Currentdeg));
+		}break;
+
+		case 2:
+		//if positive calibration degree - current degree is between the opposite circular calibration degree and 0 (Xnc:Deg:0)
+		//if negative calibration degree - current degree is between 0 and the opposite circular calibration degree (0:Deg:Xnc)
+		{
+			Currentdeg = abs(Xc) + abs(Currentdeg);
+		}break;
+
+		case 3:
+		//if positive calibration degree - current degree is between 0 and the calibration degree (0:Deg:Xc)
+		//if negative calibration degree - current degree is between the calibration degree and 0 (Xc:Deg:0)
+		{
+			Currentdeg = abs(Xc) - abs(Currentdeg);
+		}break;
+
+		case 4:
+		//if positive calibration degree - current degree is between the calibration degree and 180 (Xc:Deg:180)
+		//if negative calibration degree - current degree is between -180 and the calibration degree (-180:Deg:Xc)
+		{
+			Currentdeg = abs(Currentdeg) - abs(Xc);
+		}break;
+	}
+
+
+	if(Xc >= 0) // checks if it needs to go right or left (by the sutiation
+	{
+		if(situation == 2 || situation == 3)
+		{
+			Currentdeg = -Currentdeg;
+		}
+	}
+	else if(Xc<0)
+	{
+		if(situation == 1 || situation == 4)
+		{
+			Currentdeg = -Currentdeg;
+		}
+	}
+
+	if(Currentdeg > 90)//puts the limits to the servo
+	{
+		Currentdeg = 90;
+	}
+	if(Currentdeg < -90)
+	{
+		Currentdeg = -90;
+	}
+
+	Currentdeg = map(Currentdeg, -90, 90, 180, 0);// map the servo degrees to its readable variables
+
+	#ifdef DEBUG
+    // blink LED to indicate activity
+    counter = micros() - counter;
+    counter_float = (float)counter/1000000; //in seconds
+    Serial.printf("operating in %d Hz",(uint32_t)(1/counter_float));
+    // Serial.printf("operating in %d",(counter));
+    Serial.println();
+    counter = micros();
+    #endif
+
 }
 
 void mpu6050_get_data()
@@ -489,105 +525,117 @@ void send_data_rf24()
 }
 
 
-void MPUDeg_2_ServoDeg(int Xc, int Xnc)
-//a function that takes the mpu degree and
-//change it to the limitations of the servo motors
 
-//calbrate - put in limits of (+-90) - change from -90:90 to 0:180
+
+
+
+
+
+// ================================================================
+// ===                      INITIAL SETUP                       ===
+// ================================================================
+
+void setup()
 {
-	if(Xc>=0)//checks which calibrations need to be performed
+
+    // initialize serial communication
+    Serial.begin(115200);  // MUST reset the Serial Monitor to 115200 (lower right of window )
+    // NOTE: The "F" in the print statements means "unchangable data; save in Flash Memory to conserve SRAM"
+    Serial.println(F("Send data by nRF24L01 radio to another Arduino"));
+
+	// join I2C bus (I2Cdev library doesn't do this automatically)
+	#if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
+        Wire.begin();
+        Wire.setClock(400000); // 400kHz I2C clock. Comment this line if having compilation difficulties
+    #elif I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_FASTWIRE
+        Fastwire::setup(400, true);
+    #endif
+
+    pinMode(calibration_button_pin, INPUT);
+
+    mpu6050_startup();	//does alot of configurations for the mpu6050 to be set correctly
+
+    nrf24_startup();	//does alot of configurations for the NRF24 to be initialized correctly
+
+    mpu6050_get_data();
+
+    Currentdeg = ypr[0] * 180/M_PI;
+    MPUDeg_2_ServoDeg(Xc_yaw,Xnc_yaw);
+    ypr[0] = Currentdeg;
+
+    Xc_pitch = Currentdeg;
+    if(Xc_yaw >= 0)
 	{
-		if(Currentdeg >= -180 && Currentdeg < Xnc)
-		{
-			situation = 1;
-		}
-		else if(Currentdeg >= Xnc && Currentdeg < 0)
-		{
-			situation =2;
-		}
-		else if(Currentdeg >= 0 && Currentdeg < Xc)
-		{
-			situation = 3;
-		}
-		else if(Currentdeg >= Xc && Currentdeg < 180)
-		{
-			situation = 4;
-		}
+    	Xnc_yaw = Xc_yaw - 180;
 	}
-	else if(Xc<0)
+	else if(Xc_yaw<0)
 	{
-		if(Currentdeg >= Xnc && Currentdeg < 180)
-		{
-			situation = 1;
-		}
-		else if(Currentdeg >= 0 && Currentdeg < Xnc)
-		{
-			situation =2;
-		}
-		else if(Currentdeg >= Xc && Currentdeg < 0)
-		{
-			situation = 3;
-		}
-		else if(Currentdeg >= -180 && Currentdeg < Xc)
-		{
-			situation = 4;
-		}
-	}
-	switch(situation) // puts the calibration in the right situation
-	{
-		case 1:
-		//if positive calibration degree - current degree is between -180 and the opposite circular calibration degree (-180:Deg:Xnc)
-		//if negative calibration degree - current degree is between the opposite circular calibration degree and 180 (Xnc:Deg:180)
-		{
-			Currentdeg = abs(Xnc) + (180 - abs(Currentdeg));
-		}break;
-
-		case 2:
-		//if positive calibration degree - current degree is between the opposite circular calibration degree and 0 (Xnc:Deg:0)
-		//if negative calibration degree - current degree is between 0 and the opposite circular calibration degree (0:Deg:Xnc)
-		{
-			Currentdeg = abs(Xc) + abs(Currentdeg);
-		}break;
-
-		case 3:
-		//if positive calibration degree - current degree is between 0 and the calibration degree (0:Deg:Xc)
-		//if negative calibration degree - current degree is between the calibration degree and 0 (Xc:Deg:0)
-		{
-			Currentdeg = abs(Xc) - abs(Currentdeg);
-		}break;
-
-		case 4:
-		//if positive calibration degree - current degree is between the calibration degree and 180 (Xc:Deg:180)
-		//if negative calibration degree - current degree is between -180 and the calibration degree (-180:Deg:Xc)
-		{
-			Currentdeg = abs(Currentdeg) - abs(Xc);
-		}break;
+		Xnc_yaw = Xc_yaw + 180;
 	}
 
+	// test conections
+	while(radio.isChipConnected() == false)
+		Serial.println("nRF24 is NOT connected");
+	while(mpu.testConnection() == false)
+		Serial.println("mpu6050 is NOT connected");
 
-	if(Xc >= 0) // checks if it needs to go right or left (by the sutiation
-	{
-		if(situation == 2 || situation == 3)
-		{
-			Currentdeg = -Currentdeg;
-		}
-	}
-	else if(Xc<0)
-	{
-		if(situation == 1 || situation == 4)
-		{
-			Currentdeg = -Currentdeg;
-		}
-	}
-
-	if(Currentdeg > 90)//puts the limits to the servo
-	{
-		Currentdeg = 90;
-	}
-	if(Currentdeg < -90)
-	{
-		Currentdeg = -90;
-	}
-
-	Currentdeg = map(Currentdeg, -90, 90, 180, 0);// map the servo degrees to its readable variables
 }
+
+
+
+
+
+// ================================================================
+// ===                    MAIN PROGRAM LOOP                     ===
+// ================================================================
+
+void loop()
+{
+    // if programming failed, don't try to do anything TO_DO consider taking this line out
+    if (!dmpReady)
+    {
+    	return;
+    }
+
+    // wait for MPU interrupt or extra packet(s) available
+    while (!mpuInterrupt && fifoCount < packetSize)
+    {
+		// other program behavior stuff here
+    }
+
+    mpu6050_get_data();
+
+    send_data_rf24();
+    delay(3);
+
+//    while (Serial.available() && Serial.read()); // empty buffer
+    if (digitalRead(calibration_button_pin) == 0)		// check if button was pressed to calibrate
+    {
+    	//taking messure of current degree on the yaw axis
+        Xc_yaw = ypr[0] * 180/M_PI;
+        if(Xc_yaw >= 0)
+    	{
+        	Xnc_yaw = Xc_yaw - 180;
+    	}
+    	else if(Xc_yaw<0)
+    	{
+    		Xnc_yaw = Xc_yaw + 180;
+    	}
+
+        //taking messure of current degree on the pitch axis
+        Xc_pitch = ypr[1] * 180/M_PI;
+		if(Xc_pitch >= 0)
+		{
+			Xnc_pitch = Xc_pitch - 180;
+		}
+		else if(Xc_pitch < 0)
+		{
+			Xnc_pitch = Xc_pitch + 180;
+		}
+
+
+    }
+//    while (Serial.available() && Serial.read()); // empty buffer again
+
+}
+
