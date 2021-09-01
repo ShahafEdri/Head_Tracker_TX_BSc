@@ -79,7 +79,7 @@ void setup()
 
     Serial.begin(115200);  // MUST reset the Serial Monitor to 115200 (lower right of window )
     // NOTE: The "F" in the print statements means "unchangable data; save in Flash Memory to conserve SRAM"
-    Serial.println(F("YourDuino.com Example: Send joystick data by nRF24L01 radio to another Arduino"));
+    Serial.println(F("Send data by nRF24L01 radio to another Arduino"));
 
     /*-----( RF24 Initialize and preferences )-----*/
     radio.begin();          // Initialize the nRF24L01 Radio
