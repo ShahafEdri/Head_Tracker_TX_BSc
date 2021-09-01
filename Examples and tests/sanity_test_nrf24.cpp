@@ -32,8 +32,20 @@ void setup()
     radio.setPALevel(RF24_PA_MIN);
 }
 
+#define chip_connected_validation
+// #define print_detailes
+
 void loop()
 {
- radio.printDetails();
- delay(10000);
+    #ifdef chip_connected_validation
+        if(radio.isChipConnected() == true)
+            Serial.println("nRF24 module found");
+        else
+            Serial.println("nRF24 is NOT connected");
+    #endif
+
+    #ifdef print_detailes
+        radio.printDetails();
+        delay(10000);
+    #endif
 }
