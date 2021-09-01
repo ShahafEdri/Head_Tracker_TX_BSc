@@ -83,35 +83,35 @@ struct dataStruct {
 
 void setup()   /****** SETUP: RUNS ONCE ******/
 {
-  Serial.begin(115200);   // MUST reset the Serial Monitor to 115200 (lower right of window )
-  // NOTE: The "F" in the print statements means "unchangable data; save in Flash Memory to conserve SRAM"
-  Serial.println(F("YourDuino.com Example: Receive joystick data by nRF24L01 radio from another Arduino"));
-  Serial.println(F("and control servos if attached (Check 'hasHardware' variable"));
-  printf_begin(); // Needed for "printDetails" Takes up some memory
-  /*-----( Set up servos )-----*/
-  if (hasHardware)
-  {
-    HorizontalServo.attach(ServoHorizontalPIN);  // attaches the servo to the servo object
-    VerticalServo.attach(ServoVerticalPIN);
-  }
+    Serial.begin(115200);   // MUST reset the Serial Monitor to 115200 (lower right of window )
+    // NOTE: The "F" in the print statements means "unchangable data; save in Flash Memory to conserve SRAM"
+    Serial.println(F("YourDuino.com Example: Receive joystick data by nRF24L01 radio from another Arduino"));
+    Serial.println(F("and control servos if attached (Check 'hasHardware' variable"));
+    printf_begin(); // Needed for "printDetails" Takes up some memory
+    /*-----( Set up servos )-----*/
+    if (hasHardware)
+    {
+        HorizontalServo.attach(ServoHorizontalPIN);  // attaches the servo to the servo object
+        VerticalServo.attach(ServoVerticalPIN);
+    }
 
-  /*-----( RF24 Initialize and preferences )-----*/
-  radio.begin();          // Initialize the nRF24L01 Radio
-  radio.setChannel(108);  // 2.508 Ghz - Above most Wifi Channels
-  radio.setDataRate(RF24_250KBPS); // Fast enough.. Better range
+    /*-----( RF24 Initialize and preferences )-----*/
+    radio.begin();          // Initialize the nRF24L01 Radio
+    radio.setChannel(108);  // 2.508 Ghz - Above most Wifi Channels
+    radio.setDataRate(RF24_250KBPS); // Fast enough.. Better range
 
-  // Set the Power Amplifier Level low to prevent power supply related issues since this is a
-  // getting_started sketch, and the likelihood of close proximity of the devices. RF24_PA_MAX is default.
-  // PALevelcan be one of four levels: RF24_PA_MIN, RF24_PA_LOW, RF24_PA_HIGH and RF24_PA_MAX
-  radio.setPALevel(RF24_PA_LOW);
+    // Set the Power Amplifier Level low to prevent power supply related issues since this is a
+    // getting_started sketch, and the likelihood of close proximity of the devices. RF24_PA_MAX is default.
+    // PALevelcan be one of four levels: RF24_PA_MIN, RF24_PA_LOW, RF24_PA_HIGH and RF24_PA_MAX
+    radio.setPALevel(RF24_PA_LOW);
 
-  // Open a writing and reading pipe on each radio, with opposite addresses
-  radio.openWritingPipe(addresses[1]);
-  radio.openReadingPipe(1, addresses[0]);
+    // Open a writing and reading pipe on each radio, with opposite addresses
+    radio.openWritingPipe(addresses[1]);
+    radio.openReadingPipe(1, addresses[0]);
 
-  // Start the radio listening for data
-  radio.startListening();
-//  radio.printDetails(); //Uncomment to show LOTS of debugging information
+    // Start the radio listening for data
+    radio.startListening();
+    //  radio.printDetails(); //Uncomment to show LOTS of debugging information
 
 }//--(end setup )---
 
@@ -119,54 +119,54 @@ void setup()   /****** SETUP: RUNS ONCE ******/
 void loop()   /****** LOOP: RUNS CONSTANTLY ******/
 {
 
-  if ( radio.available())
-  {
-
-    while (radio.available())   // While there is data ready to be retrieved from the receive pipe
+    if ( radio.available())
     {
-      radio.read( &myData, sizeof(myData) );             // Get the data
-    }
 
-    radio.stopListening();                               // First, stop listening so we can transmit
-    radio.write( &myData, sizeof(myData) );              // Send the received data back.
-    radio.startListening();                              // Now, resume listening so we catch the next packets.
+        while (radio.available())   // While there is data ready to be retrieved from the receive pipe
+        {
+            radio.read( &myData, sizeof(myData) );             // Get the data
+        }
 
-
-
-
-
-    /*
-       this is the addon for the test of the remote control NO.1
-       */
+        radio.stopListening();                               // First, stop listening so we can transmit
+        radio.write( &myData, sizeof(myData) );              // Send the received data back.
+        radio.startListening();                              // Now, resume listening so we catch the next packets.
 
 
-    var = myData.Yposition/4;
-//  	if (myData.Yposition>595)//checks if the potentiometer is positioned forward or backward
-  	if (var>=149)//checks if the potentiometer is positioned forward or backward
-  	{
 
-//  		var = map(myData.Yposition-595, 0, 1162, 0, 255);
-  		var = var - 149;
-  		var = var*2;
-  		analogWrite(5, var);
-//  		digitalWrite(5,HIGH);
-  		digitalWrite(4,LOW);
-  	}
-  	else //backward
-  	{
-//  		var = map(595-myData.Yposition, 0, 1162, 0, 255);
-  		var = 149 - var;
-  		var = var*2;
-  		analogWrite(5,-256+var );
-//  		digitalWrite(5,LOW);
-  		digitalWrite(4,HIGH);
-  	}
-  	Serial.print("\n");
-  	Serial.print(var);
-  	Serial.print("\n");
-   /*
-  	 end of addon test
-  	 */
+
+
+        /*
+        this is the addon for the test of the remote control NO.1
+        */
+
+
+        var = myData.Yposition/4;
+        // if (myData.Yposition>595)//checks if the potentiometer is positioned forward or backward
+  	    if (var>=149)//checks if the potentiometer is positioned forward or backward
+  	    {
+
+            //  		var = map(myData.Yposition-595, 0, 1162, 0, 255);
+            var = var - 149;
+            var = var*2;
+            analogWrite(5, var);
+            //  		digitalWrite(5,HIGH);
+            digitalWrite(4,LOW);
+        }
+      	else //backward
+  	    {
+            //  		var = map(595-myData.Yposition, 0, 1162, 0, 255);
+            var = 149 - var;
+            var = var*2;
+            analogWrite(5,-256+var );
+            //  		digitalWrite(5,LOW);
+            digitalWrite(4,HIGH);
+        }
+        Serial.print("\n");
+        Serial.print(var);
+        Serial.print("\n");
+        /*
+        end of addon test
+        */
 
 
 
@@ -181,58 +181,57 @@ void loop()   /****** LOOP: RUNS CONSTANTLY ******/
     Serial.print(myData.Yposition);
     if ( myData.switchOn == 1)//switch state
     {
-      Serial.println(F("\t Switch ON"));
+        Serial.println(F("\t Switch ON"));
     }
     else
     {
-      Serial.println(F("\t Switch OFF"));
+        Serial.println(F("\t Switch OFF"));
     }
 
-  } // END radio available
+    } // END radio available
 
-  if (hasHardware)
-  {
-    /*-----( Calculate servo position values, send to the servos )-----*/
-    SoftwareServo::refresh();//refreshes servo to keep them updating
-    HorizontalJoystickReceived  = myData.Xposition;  // Get the values received
-    VerticalJoystickReceived    = myData.Yposition;
+    if (hasHardware)
+    {
+        /*-----( Calculate servo position values, send to the servos )-----*/
+        SoftwareServo::refresh();//refreshes servo to keep them updating
+        HorizontalJoystickReceived  = myData.Xposition;  // Get the values received
+        VerticalJoystickReceived    = myData.Yposition;
 
-    // scale it to use it with the servo (value between MIN and MAX)
-    HorizontalServoPosition  = map(HorizontalJoystickReceived, 0, 1023, ServoMIN_H , ServoMAX_H);
-    VerticalServoPosition    = map(VerticalJoystickReceived,   0, 1023, ServoMIN_V , ServoMAX_V);
+        // scale it to use it with the servo (value between MIN and MAX)
+        HorizontalServoPosition  = map(HorizontalJoystickReceived, 0, 1023, ServoMIN_H , ServoMAX_H);
+        VerticalServoPosition    = map(VerticalJoystickReceived,   0, 1023, ServoMIN_V , ServoMAX_V);
 
-    // tell servos to go to position
-    HorizontalServo.write(HorizontalServoPosition);
-    VerticalServo.write(VerticalServoPosition);
+        // tell servos to go to position
+        HorizontalServo.write(HorizontalServoPosition);
+        VerticalServo.write(VerticalServoPosition);
 
-  } // END hasHardware
+    } // END hasHardware
 
 
 
-//  /*
-//     this is the addon for the test of the remote control NO.1
-//     */
-//
-//
-//
-//	if (myData.Yposition>595)//forward
-//	{
-//
-//		var = map(myData.Yposition-595, 0, 1162, 0, 255);
-//		analogWrite(5, var );
-//		digitalWrite(4,LOW);
-//	}
-//	else //backward
-//	{
-//		var = map(595-myData.Yposition, 0, 1162, 0, 255);
-//		analogWrite(5, -256+var );
-//		digitalWrite(4,HIGH);
-//	}
-//	Serial.print("\n");
-//	Serial.print(var);
-// /*
-//	 end of addon test
-//	 */
+ /*
+    this is the addon for the test of the remote control NO.1
+    */
+
+
+
+    if (myData.Yposition>595)//forward
+    {
+        var = map(myData.Yposition-595, 0, 1162, 0, 255);
+        analogWrite(5, var );
+        digitalWrite(4,LOW);
+    }
+    else //backward
+    {
+        var = map(595-myData.Yposition, 0, 1162, 0, 255);
+        analogWrite(5, -256+var );
+        digitalWrite(4,HIGH);
+    }
+    Serial.print("\n");
+    Serial.print(var);
+    /*
+    end of addon test
+    */
 
 
 }//--(end main loop )---
