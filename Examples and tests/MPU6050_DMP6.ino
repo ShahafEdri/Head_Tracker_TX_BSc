@@ -44,7 +44,7 @@ THE SOFTWARE.
 // I2Cdev and MPU6050 must be installed as libraries, or else the .cpp/.h files
 // for both classes must be in the include path of your project
 #include "I2Cdev.h"
-
+#include "SPI.h"
 #include "MPU6050_6Axis_MotionApps20.h"
 //#include "MPU6050.h" // not necessary if using MotionApps include file
 
@@ -86,9 +86,18 @@ MPU6050 mpu;
 // more info, see: http://en.wikipedia.org/wiki/Gimbal_lock)
 #define OUTPUT_READABLE_YAWPITCHROLL
 
+user dfines
+#define DEBUG
+#define STM32F1
 
-#define INTERRUPT_PIN 2  // use pin 2 on Arduino Uno & most boards
-#define LED_PIN 13 // (Arduino is 13, Teensy is 11, Teensy++ is 6)
+#if defined STM32F1
+    #define INTERRUPT_PIN A0  // use pin 2 on Arduino Uno & most boards
+#elif defined ARDUINO
+    #define INTERRUPT_PIN 2  // use pin 2 on Arduino Uno & most boards
+#endif
+
+#define LED_PIN LED_BUILTIN // (Arduino is 13, Teensy is 11, Teensy++ is 6)
+
 bool blinkState = false;
 
 // MPU control/status vars
@@ -108,6 +117,8 @@ VectorFloat gravity;    // [x, y, z]            gravity vector
 float euler[3];         // [psi, theta, phi]    Euler angle container
 float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector
 
+uint32_t counter=0;
+float_t counter_float=0;
 
 
 // ================================================================
@@ -151,10 +162,12 @@ void setup() {
         Serial.println(mpu.testConnection() ? F("MPU6050 connection successful") : F("MPU6050 connection failed"));
 
         // wait for ready
+        #ifndef DEBUG
         Serial.println(F("\nSend any character to begin DMP programming and demo: "));
         while (Serial.available() && Serial.read()); // empty buffer
         while (!Serial.available());                 // wait for data
         while (Serial.available() && Serial.read()); // empty buffer again
+        #endif
 
         // load and configure the DMP
         Serial.println(F("Initializing DMP..."));
@@ -273,9 +286,17 @@ void loop() {
         #endif
 
 
+        #ifdef DEBUG
         // blink LED to indicate activity
         blinkState = !blinkState;
         digitalWrite(LED_PIN, blinkState);
+        counter = micros() - counter;
+        counter_float = (float)counter/1000000; //in seconds
+        Serial.printf("operating in %d Hz",(uint32_t)(1/counter_float));
+        // Serial.printf("operating in %d",(counter));
+        Serial.println();
+        counter = micros();
+        #endif
     }
 }
 
