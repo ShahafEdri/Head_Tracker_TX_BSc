@@ -2,8 +2,18 @@
 #include <RF24.h>
 #include "Servo.h"
 
-#define servo_yaw_pin A1
-#define servo_pitch_pin A0
+
+#define STM32F1
+
+/*-----( Declare Constants and Pin Numbers )-----*/
+#ifdef STM32F1
+    #define servo_yaw_pin A1
+    #define servo_pitch_pin A0
+#elif #defined ARDUINO_NANO // arduino pins
+    #define servo_yaw_pin 2
+    #define servo_pitch_pin 3
+#endif
+
 
 Servo servo_yaw;
 Servo servo_pitch;
