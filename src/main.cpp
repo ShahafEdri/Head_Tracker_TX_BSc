@@ -44,9 +44,14 @@ THE SOFTWARE.
 // I2Cdev and MPU6050 must be installed as libraries, or else the .cpp/.h files
 // for both classes must be in the include path of your project
 #include "I2Cdev.h"
-#include "SPI.h"
+
 #include "MPU6050_6Axis_MotionApps20.h"
 //#include "MPU6050.h" // not necessary if using MotionApps include file
+
+/*-----( Import needed libraries for radio NRF24 )-----*/
+#include <SPI.h>   // Comes with Arduino IDE
+#include "RF24.h"  // Download and Install (See above)
+
 
 // Arduino Wire library is required if I2Cdev I2CDEV_ARDUINO_WIRE implementation
 // is used in I2Cdev.h
@@ -86,22 +91,18 @@ MPU6050 mpu;
 // more info, see: http://en.wikipedia.org/wiki/Gimbal_lock)
 #define OUTPUT_READABLE_YAWPITCHROLL
 
-user dfines
-#define DEBUG
-#define STM32F1
+/*-----( Declare Constants and Pin (chip select) Numbers for nrf24 )-----*/
+#define  CE_PIN  7   // The pins to be used for CE and SN
+#define  CSN_PIN 8
 
-#if defined STM32F1
-    #define INTERRUPT_PIN A0  // use pin 2 on Arduino Uno & most boards
-#elif defined ARDUINO
-    #define INTERRUPT_PIN 2  // use pin 2 on Arduino Uno & most boards
-#endif
-
-#define LED_PIN LED_BUILTIN // (Arduino is 13, Teensy is 11, Teensy++ is 6)
-
+/*-----( Declare Constants and Pin Numbers for mpu6050 IMU )-----*/
+#define INTERRUPT_PIN 2  // use pin 2 on Arduino Uno & most boards
+#define LED_PIN 13 // (Arduino is 13, Teensy is 11, Teensy++ is 6)
+#define calibration_button_pin 5// the pin of the calibration button
 bool blinkState = false;
 
 // MPU control/status vars
-bool dmpReady = false;  // set true if DMP init was successful
+bool dmpReady = false;  // set true if DMP int was successful
 uint8_t mpuIntStatus;   // holds actual interrupt status byte from MPU
 uint8_t devStatus;      // return status after each device operation (0 = success, !0 = error)
 uint16_t packetSize;    // expected DMP packet size (default is 42 bytes)
@@ -117,8 +118,67 @@ VectorFloat gravity;    // [x, y, z]            gravity vector
 float euler[3];         // [psi, theta, phi]    Euler angle container
 float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll container and gravity vector
 
-uint32_t counter=0;
-float_t counter_float=0;
+//NRF24 radio declaration data structure and pipe declarations
+/*-----( Declare objects )-----*/
+/* Hardware configuration: Set up nRF24L01 radio on SPI bus plus (usually) pins 7 & 8 (Can be changed) */
+RF24 radio(CE_PIN, CSN_PIN);
+
+/*-----( Declare Variables )-----*/
+byte addresses[][6] = {"1Node", "2Node"}; // These will be the names of the "Pipes"
+
+/*-----( received and sent time variables )-----*/
+unsigned long timeNow;  // Used to grab the current time, calculate delays
+unsigned long started_waiting_at;
+boolean RESET_YAW;       // switch state
+boolean timeout;       // Timeout? True or False
+
+// Allows testing of radios and code without Joystick hardware. Set 'true' when joystick connected
+//  boolean hasHardware = false;
+  boolean hasHardware = true;
+
+  bool calibration_button = 0 ;//current state of the calibration switch
+
+  int Currentdeg = 0;
+  int situation = 1;
+//  int Xc = 0;
+//  int Xnc = 0;
+
+  int Xc_yaw = 0;
+  int Xnc_yaw = 0;
+
+  int Xc_pitch = 0;
+  int Xnc_pitch = 0;
+
+/**
+  Data Structure
+  Create a data structure for transmitting and receiving data
+  This allows many variables to be easily sent and received in a single transmission
+  See http://www.cplusplus.com/doc/tutorial/structures/
+*/
+struct dataStruct
+{
+  unsigned long _micros;  // to save response times
+  int yaw;          // The Joystick position values
+  int pitch;
+  bool switchOn;          // The Joystick push-down switch
+} myData;                 // This can be accessed in the form:  myData.Xposition  etc.
+
+/*
+  Data Structure for acknowledge FIX_ME need to modify TX structure
+  Create a data structure for transmitting and receiving Dynamic Acknowledge
+  This allows many variables to be easily sent back to receiver in a single transmission
+*/
+struct ackStruct
+{
+  unsigned long _micros;  // to save response times
+  int Xposition;          // The Joystick position values
+  int Yposition;
+  bool switchOn;          // The Joystick push-down switch
+  int check;			  // first check of the code FIX_ME change me to right variable
+} myAck;
+
+
+
 
 
 // ================================================================
@@ -137,9 +197,10 @@ void dmpDataReady()
 // ===                      INITIAL SETUP                       ===
 // ================================================================
 
-void setup() {
-    // join I2C bus (I2Cdev library doesn't do this automatically)
-    #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
+void setup()
+{
+	// join I2C bus (I2Cdev library doesn't do this automatically)
+	#if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
         Wire.begin();
         Wire.setClock(400000); // 400kHz I2C clock. Comment this line if having compilation difficulties
     #elif I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_FASTWIRE
@@ -149,69 +210,30 @@ void setup() {
     // initialize serial communication
     // (115200 chosen because it is required for Teapot Demo output, but it's
     // really up to you depending on your project)
-    Serial.begin(115200);
+//    Serial.begin(115200);
 
+    pinMode(calibration_button_pin, INPUT);
 
-        // initialize device
-        Serial.println(F("Initializing I2C devices..."));
-        mpu.initialize();
-        pinMode(INTERRUPT_PIN, INPUT);
+    mpu6050_startup();	//does alot of configurations for the mpu6050 to be set correctly
 
-        // verify connection
-        Serial.println(F("Testing device connections..."));
-        Serial.println(mpu.testConnection() ? F("MPU6050 connection successful") : F("MPU6050 connection failed"));
+    nrf24_startup();	//does alot of configurations for the NRF24 to be initialized correctly
 
-        // wait for ready
-        #ifndef DEBUG
-        Serial.println(F("\nSend any character to begin DMP programming and demo: "));
-        while (Serial.available() && Serial.read()); // empty buffer
-        while (!Serial.available());                 // wait for data
-        while (Serial.available() && Serial.read()); // empty buffer again
-        #endif
+    mpu6050_get_data();
 
-        // load and configure the DMP
-        Serial.println(F("Initializing DMP..."));
-        devStatus = mpu.dmpInitialize();
+    Currentdeg = ypr[0] * 180/M_PI;
+    MPUDeg_2_ServoDeg(Xc_yaw,Xnc_yaw);
+    ypr[0] = Currentdeg;
 
-        // supply your own gyro offsets here, scaled for min sensitivity
-        mpu.setXGyroOffset(220);
-        mpu.setYGyroOffset(76);
-        mpu.setZGyroOffset(-85);
-        mpu.setZAccelOffset(1788); // 1688 factory default for my test chip
-
-        // make sure it worked (returns 0 if so)
-        if (devStatus == 0)
-        {
-            // turn on the DMP, now that it's ready
-            Serial.println(F("Enabling DMP..."));
-            mpu.setDMPEnabled(true);
-
-            // enable Arduino interrupt detection
-            Serial.println(F("Enabling interrupt detection (Arduino external interrupt 0)..."));
-            attachInterrupt(digitalPinToInterrupt(INTERRUPT_PIN), dmpDataReady, RISING);
-            mpuIntStatus = mpu.getIntStatus();
-
-            // set our DMP Ready flag so the main loop() function knows it's okay to use it
-            Serial.println(F("DMP ready! Waiting for first interrupt..."));
-            dmpReady = true;
-
-            // get expected DMP packet size for later comparison
-            packetSize = mpu.dmpGetFIFOPacketSize();
-        }
-        else
-        {
-            // ERROR!
-            // 1 = initial memory load failed
-            // 2 = DMP configuration updates failed
-            // (if it's going to break, usually the code will be 1)
-            Serial.print(F("DMP Initialization failed (code "));
-            Serial.print(devStatus);
-            Serial.println(F(")"));
-        }
-
-        // configure LED for output
-        pinMode(LED_PIN, OUTPUT);
-    }
+    Xc_pitch = Currentdeg;
+    if(Xc_yaw >= 0)
+	{
+    	Xnc_yaw = Xc_yaw - 180;
+	}
+	else if(Xc_yaw<0)
+	{
+		Xnc_yaw = Xc_yaw + 180;
+	}
+}
 
 
 
@@ -221,8 +243,9 @@ void setup() {
 // ===                    MAIN PROGRAM LOOP                     ===
 // ================================================================
 
-void loop() {
-    // if programming failed, don't try to do anything
+void loop()
+{
+    // if programming failed, don't try to do anything TO_DO consider taking this line out
     if (!dmpReady)
     {
     	return;
@@ -231,18 +254,109 @@ void loop() {
     // wait for MPU interrupt or extra packet(s) available
     while (!mpuInterrupt && fifoCount < packetSize)
     {
-        // other program behavior stuff here
-        // .
-        // .
-        // .
-        // if you are really paranoid you can frequently test in between other
-        // stuff to see if mpuInterrupt is true, and if so, "break;" from the
-        // while() loop to immediately process the MPU data
-        // .
-        // .
-        // .
+		// other program behavior stuff here
     }
 
+    mpu6050_get_data();
+
+    send_data_rf24();
+    delay(5);
+
+//    while (Serial.available() && Serial.read()); // empty buffer
+    if (digitalRead(calibration_button_pin) == 0)		// check if button was pressed to calibrate
+    {
+    	//taking messure of current degree on the yaw axis
+        Xc_yaw = ypr[0] * 180/M_PI;
+        if(Xc_yaw >= 0)
+    	{
+        	Xnc_yaw = Xc_yaw - 180;
+    	}
+    	else if(Xc_yaw<0)
+    	{
+    		Xnc_yaw = Xc_yaw + 180;
+    	}
+
+        //taking messure of current degree on the pitch axis
+        Xc_pitch = ypr[1] * 180/M_PI;
+		if(Xc_pitch >= 0)
+		{
+			Xnc_pitch = Xc_pitch - 180;
+		}
+		else if(Xc_pitch < 0)
+		{
+			Xnc_pitch = Xc_pitch + 180;
+		}
+
+
+    }
+//    while (Serial.available() && Serial.read()); // empty buffer again
+
+}
+
+
+void mpu6050_startup()
+{
+    // initialize device
+    Serial.println(F("Initializing I2C devices..."));
+    mpu.initialize();
+    pinMode(INTERRUPT_PIN, INPUT);
+
+    // verify connection
+    Serial.println(F("Testing device connections..."));
+    Serial.println(mpu.testConnection() ? F("MPU6050 connection successful") : F("MPU6050 connection failed"));
+
+    // wait for ready
+//    Serial.println(F("\nSend any character to begin DMP programming and demo: "));
+//    while (Serial.available() && Serial.read()); // empty buffer
+//    while (!Serial.available());                 // wait for data
+//    while (Serial.available() && Serial.read()); // empty buffer again
+
+    // load and configure the DMP
+    Serial.println(F("Initializing DMP..."));
+    devStatus = mpu.dmpInitialize();
+
+    // supply your own gyro offsets here, scaled for min sensitivity
+    mpu.setXGyroOffset(220);
+    mpu.setYGyroOffset(76);
+    mpu.setZGyroOffset(-85);
+    mpu.setZAccelOffset(1788); // 1688 factory default for my test chip
+
+    // make sure it worked (returns 0 if so)
+    if (devStatus == 0)
+    {
+        // turn on the DMP, now that it's ready
+        Serial.println(F("Enabling DMP..."));
+        mpu.setDMPEnabled(true);
+
+        // enable Arduino interrupt detection
+        Serial.println(F("Enabling interrupt detection (Arduino external interrupt 0)..."));
+        attachInterrupt(digitalPinToInterrupt(INTERRUPT_PIN), dmpDataReady, RISING);
+        mpuIntStatus = mpu.getIntStatus();
+
+        // set our DMP Ready flag so the main loop() function knows it's okay to use it
+        Serial.println(F("DMP ready! Waiting for first interrupt..."));
+        dmpReady = true;
+
+        // get expected DMP packet size for later comparison
+        packetSize = mpu.dmpGetFIFOPacketSize();
+    }
+    else
+    {
+        // ERROR!
+        // 1 = initial memory load failed
+        // 2 = DMP configuration updates failed
+        // (if it's going to break, usually the code will be 1)
+        Serial.print(F("DMP Initialization failed (code "));
+        Serial.print(devStatus);
+        Serial.println(F(")"));
+    }
+
+    // configure LED for output
+    pinMode(LED_PIN, OUTPUT);
+}
+
+void mpu6050_get_data()
+{
     // reset interrupt flag and get INT_STATUS byte
     mpuInterrupt = false;
     mpuIntStatus = mpu.getIntStatus();
@@ -255,7 +369,7 @@ void loop() {
     {
         // reset so we can continue cleanly
         mpu.resetFIFO();
-        Serial.println(F("FIFO overflow!"));
+        Serial.println(F("FIFO overflow!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"));
 
     // otherwise, check for DMP data ready interrupt (this should happen frequently)
     }
@@ -266,7 +380,7 @@ void loop() {
 
         // read a packet from FIFO
         mpu.getFIFOBytes(fifoBuffer, packetSize);
-        
+
         // track FIFO count here in case there is > 1 packet available
         // (this lets us immediately read more without waiting for an interrupt)
         fifoCount -= packetSize;
@@ -277,26 +391,203 @@ void loop() {
             mpu.dmpGetQuaternion(&q, fifoBuffer);
             mpu.dmpGetGravity(&gravity, &q);
             mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
-            Serial.print("ypr\t");
-            Serial.print(ypr[0] * 180/M_PI);
-            Serial.print("\t");
-            Serial.print(ypr[1] * 180/M_PI);
-            Serial.print("\t");
-            Serial.println(ypr[2] * 180/M_PI);
+
+//            Serial.print("ypr\t");
+//            Serial.print(ypr[0] * 180/M_PI);
+//            Serial.print("\t");
+//            Serial.print(ypr[1] * 180/M_PI);
+//            Serial.print("\t");
+//            Serial.println(ypr[2] * 180/M_PI);
+//            Serial.print("Xc_yaw = ");
+//            Serial.println(Xc_yaw);
         #endif
 
 
-        #ifdef DEBUG
         // blink LED to indicate activity
         blinkState = !blinkState;
         digitalWrite(LED_PIN, blinkState);
-        counter = micros() - counter;
-        counter_float = (float)counter/1000000; //in seconds
-        Serial.printf("operating in %d Hz",(uint32_t)(1/counter_float));
-        // Serial.printf("operating in %d",(counter));
-        Serial.println();
-        counter = micros();
-        #endif
     }
 }
 
+void nrf24_startup()
+{
+	radio.begin();          // Initialize the nRF24L01 Radio
+	radio.setChannel(108);  // Above most WiFi frequencies
+	radio.setDataRate(RF24_250KBPS); // Fast enough.. Better range
+
+	// Set the Power Amplifier Level low to prevent power supply related issues since this is a
+	// getting_started sketch, and the likelihood of close proximity of the devices. RF24_PA_MAX is default.
+	// PALevelcan be one of four levels: RF24_PA_MIN, RF24_PA_LOW, RF24_PA_HIGH and RF24_PA_MAX
+	radio.setPALevel(RF24_PA_MAX);
+
+	radio.enableAckPayload();
+	radio.enableDynamicAck();
+	radio.setAutoAck(true);
+	radio.setRetries(15, 15);
+
+	// Open a writing and reading pipe on each radio, with opposite addresses
+	radio.openWritingPipe(addresses[0]);
+//////////////RF24 initialization End/////////////////
+}
+
+void send_data_rf24()
+{
+	if (hasHardware)  // Set in variables at top
+	  {
+		/*********************( Read the Joystick positions )*************************/
+        Currentdeg = ypr[0] * 180/M_PI;
+		MPUDeg_2_ServoDeg(Xc_yaw,Xnc_yaw);
+		myData.yaw = Currentdeg;
+
+        Currentdeg = ypr[1] * 180/M_PI;
+		MPUDeg_2_ServoDeg(Xc_pitch,Xnc_pitch);
+		myData.pitch = Currentdeg;
+
+//		myData.switchOn  = !digitalRead(RESET_YAW);  // Invert the pulldown switch
+	  }
+	  else
+	  {
+		myData.yaw = 89;  // Send some known fake data
+		myData.pitch = 91;
+	  }
+
+	  myData._micros = micros();  // Send back for timing
+
+	  Serial.print(F("Now sending  -  "));
+
+	  if (radio.write( &myData, sizeof(myData) ))              // Send data, checking for error ("!" means NOT)
+	  {
+		Serial.println(F("Transmit success "));
+		if(radio.isAckPayloadAvailable())
+		{
+		  radio.read(&myAck, sizeof (myAck));
+		  Serial.println(F("Ack receive success "));
+		}
+	  }
+	  else
+		{
+			Serial.println(F("Transmit failed "));
+		}
+
+	timeNow = micros();
+
+	// Show the data that was transmitted and acknowledgment payload
+//	Serial.print(F("Sent "));
+//	Serial.print(timeNow);
+//	Serial.print(F(", Got response "));
+//	Serial.print(myData._micros);
+//	Serial.print(F(", Round-trip delay "));
+//	Serial.print(timeNow - myData._micros);
+//	Serial.println(F(" mS "));
+//	Serial.print(F("Ack check - "));
+//	Serial.print(myAck.check);
+//	Serial.println(F(" done "));
+//	Serial.println();
+
+	  // Send again after delay. When working OK, change to something like 100
+	  delay(5);
+}
+
+
+void MPUDeg_2_ServoDeg(int Xc, int Xnc)
+//a function that takes the mpu degree and
+//change it to the limitations of the servo motors
+
+//calbrate - put in limits of (+-90) - change from -90:90 to 0:180
+{
+	if(Xc>=0)//checks which calibrations need to be performed
+	{
+		if(Currentdeg >= -180 && Currentdeg < Xnc)
+		{
+			situation = 1;
+		}
+		else if(Currentdeg >= Xnc && Currentdeg < 0)
+		{
+			situation =2;
+		}
+		else if(Currentdeg >= 0 && Currentdeg < Xc)
+		{
+			situation = 3;
+		}
+		else if(Currentdeg >= Xc && Currentdeg < 180)
+		{
+			situation = 4;
+		}
+	}
+	else if(Xc<0)
+	{
+		if(Currentdeg >= Xnc && Currentdeg < 180)
+		{
+			situation = 1;
+		}
+		else if(Currentdeg >= 0 && Currentdeg < Xnc)
+		{
+			situation =2;
+		}
+		else if(Currentdeg >= Xc && Currentdeg < 0)
+		{
+			situation = 3;
+		}
+		else if(Currentdeg >= -180 && Currentdeg < Xc)
+		{
+			situation = 4;
+		}
+	}
+	switch(situation) // puts the calibration in the right situation
+	{
+		case 1:
+		//if positive calibration degree - current degree is between -180 and the opposite circular calibration degree (-180:Deg:Xnc)
+		//if negative calibration degree - current degree is between the opposite circular calibration degree and 180 (Xnc:Deg:180)
+		{
+			Currentdeg = abs(Xnc) + (180 - abs(Currentdeg));
+		}break;
+
+		case 2:
+		//if positive calibration degree - current degree is between the opposite circular calibration degree and 0 (Xnc:Deg:0)
+		//if negative calibration degree - current degree is between 0 and the opposite circular calibration degree (0:Deg:Xnc)
+		{
+			Currentdeg = abs(Xc) + abs(Currentdeg);
+		}break;
+
+		case 3:
+		//if positive calibration degree - current degree is between 0 and the calibration degree (0:Deg:Xc)
+		//if negative calibration degree - current degree is between the calibration degree and 0 (Xc:Deg:0)
+		{
+			Currentdeg = abs(Xc) - abs(Currentdeg);
+		}break;
+
+		case 4:
+		//if positive calibration degree - current degree is between the calibration degree and 180 (Xc:Deg:180)
+		//if negative calibration degree - current degree is between -180 and the calibration degree (-180:Deg:Xc)
+		{
+			Currentdeg = abs(Currentdeg) - abs(Xc);
+		}break;
+	}
+
+
+	if(Xc >= 0) // checks if it needs to go right or left (by the sutiation
+	{
+		if(situation == 2 || situation == 3)
+		{
+			Currentdeg = -Currentdeg;
+		}
+	}
+	else if(Xc<0)
+	{
+		if(situation == 1 || situation == 4)
+		{
+			Currentdeg = -Currentdeg;
+		}
+	}
+
+	if(Currentdeg > 90)//puts the limits to the servo
+	{
+		Currentdeg = 90;
+	}
+	if(Currentdeg < -90)
+	{
+		Currentdeg = -90;
+	}
+
+	Currentdeg = map(Currentdeg, -90, 90, 180, 0);// map the servo degrees to its readable variables
+}
