@@ -12,8 +12,8 @@
     #define  CE_PIN  PB1
     #define  CSN_PIN PB0
 // The pins to be used servo pins
-    #define servo_yaw_pin A1
-    #define servo_pitch_pin A0
+    #define servo_yaw_pin PA1
+    #define servo_pitch_pin PA0
 #elif #defined ARDUINO_NANO // arduino pins
 // The pins to be used for CE and SN
     #define  CE_PIN  7   
