@@ -3,12 +3,25 @@
 #include "RF24.h"
 #include "Servo.h"
 
-/*-----( Declare Constants and Pin Numbers )-----*/
-#define  CE_PIN  7   // The pins to be used for CE and SN
-#define  CSN_PIN 8
+#define STM32F1
+// #define ARDUINO_NANO
 
-#define servo_yaw_pin 2
-#define servo_pitch_pin 3
+/*-----( Declare Constants and Pin Numbers )-----*/
+#ifdef STM32F1 // stm32 pins
+// The pins to be used for CE and SN
+    #define  CE_PIN  PB1
+    #define  CSN_PIN PB0
+// The pins to be used servo pins
+    #define servo_yaw_pin A1
+    #define servo_pitch_pin A0
+#elif #defined ARDUINO_NANO // arduino pins
+// The pins to be used for CE and SN
+    #define  CE_PIN  7   
+    #define  CSN_PIN 8
+// The pins to be used servo pins
+    #define servo_yaw_pin 2
+    #define servo_pitch_pin 3
+#endif
 
 Servo servo_yaw;
 Servo servo_pitch;
