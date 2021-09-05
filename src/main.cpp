@@ -227,9 +227,11 @@ void dmpDataReady()
 void mpu6050_startup()
 {
     // initialize device
+    Serial.println(F("reseting MPU6050..."));
+    mpu.reset();
     Serial.println(F("Initializing I2C devices..."));
     mpu.initialize();
-    pinMode(INTERRUPT_PIN, INPUT);
+    pinMode(INTERRUPT_PIN, INPUT); // set interrupt pin, to know wether the mpu6050 is ready
 
     // verify connection
     Serial.println(F("Testing device connections..."));
@@ -385,16 +387,6 @@ void MPUDeg_2_ServoDeg(int Xc, int Xnc)
     }
 
     Currentdeg = map(Currentdeg, -90, 90, 180, 0);// map the servo degrees to its readable variables
-
-    #ifdef DEBUG
-        counter = micros() - counter;
-        counter_float = (float)counter/1000000; //in seconds
-        Serial.printf("operating in %d Hz",(uint32_t)(1/counter_float));
-        // Serial.printf("operating in %d",(counter));
-        Serial.println();
-        counter = micros();
-    #endif
-
 }
 
 void mpu6050_get_data()
@@ -513,7 +505,7 @@ void send_data_rf24()
             Serial.println(F("Transmit failed "));
         }
 
-    timeNow = micros();
+    //timeNow = micros();
 
     // Show the data that was transmitted and acknowledgment payload
 //	Serial.print(F("Sent "));
@@ -588,6 +580,7 @@ void setup()
     }
     while(mpu.testConnection() == false){
         Serial.println("mpu6050 is NOT connected");
+        mpu.reset();
         delay(2000);
     }
 
@@ -616,6 +609,9 @@ void loop()
     while (!mpuInterrupt && fifoCount < packetSize)
     {
         // other program behavior stuff here
+        #ifdef DEBUG
+            Serial.println("infinate loop!!!!");
+        #endif
     }
 
     mpu6050_get_data();
@@ -648,7 +644,14 @@ void loop()
             Xnc_pitch = Xc_pitch + 180;
         }
     }
-//    while (Serial.available() && Serial.read()); // empty buffer again
+    // while (Serial.available() && Serial.read()); // empty buffer again
+    #ifdef DEBUG
+        counter = micros() - counter;
+        counter_float = (float)counter/1000000; //in seconds
+        Serial.printf("operating in %d Hz",(uint32_t)(1/counter_float));
+        // Serial.printf("operating in %d",(counter));
+        Serial.println();
+        counter = micros();
+    #endif
 
 }
-
