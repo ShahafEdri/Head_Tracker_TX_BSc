@@ -559,7 +559,7 @@ void setup()
         Fastwire::setup(400, true);
     #endif
 
-    pinMode(calibration_button_pin, INPUT);
+    pinMode(calibration_button_pin, INPUT_PULLUP);
 
     mpu6050_startup();	//does alot of configurations for the mpu6050 to be set correctly
 
