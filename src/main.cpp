@@ -300,99 +300,60 @@ void MPUDeg_2_ServoDeg(int Xc, int Xnc)
 //change it to the limitations of the servo motors
 //calbrate - put in limits of (+-90) - change from -90:90 to 0:180
 {
-    if(Xc>=0)//checks which calibrations need to be performed
-    {
+    if(Xc>=0) {//checks which calibrations need to be performed
         if(Currentdeg >= -180 && Currentdeg < Xnc)
-        {
             situation = 1;
-        }
         else if(Currentdeg >= Xnc && Currentdeg < 0)
-        {
             situation =2;
-        }
         else if(Currentdeg >= 0 && Currentdeg < Xc)
-        {
             situation = 3;
-        }
         else if(Currentdeg >= Xc && Currentdeg < 180)
-        {
             situation = 4;
-        }
-    }
-    else if(Xc<0)
-    {
+    } else if(Xc<0) {
         if(Currentdeg >= Xnc && Currentdeg < 180)
-        {
             situation = 1;
-        }
         else if(Currentdeg >= 0 && Currentdeg < Xnc)
-        {
             situation =2;
-        }
         else if(Currentdeg >= Xc && Currentdeg < 0)
-        {
             situation = 3;
-        }
         else if(Currentdeg >= -180 && Currentdeg < Xc)
-        {
             situation = 4;
-        }
     }
     switch(situation) // puts the calibration in the right situation
     {
         case 1:
         //if positive calibration degree - current degree is between -180 and the opposite circular calibration degree (-180:Deg:Xnc)
         //if negative calibration degree - current degree is between the opposite circular calibration degree and 180 (Xnc:Deg:180)
-        {
             Currentdeg = abs(Xnc) + (180 - abs(Currentdeg));
-        }break;
-
+            break;
         case 2:
         //if positive calibration degree - current degree is between the opposite circular calibration degree and 0 (Xnc:Deg:0)
         //if negative calibration degree - current degree is between 0 and the opposite circular calibration degree (0:Deg:Xnc)
-        {
             Currentdeg = abs(Xc) + abs(Currentdeg);
-        }break;
-
+            break;
         case 3:
         //if positive calibration degree - current degree is between 0 and the calibration degree (0:Deg:Xc)
         //if negative calibration degree - current degree is between the calibration degree and 0 (Xc:Deg:0)
-        {
             Currentdeg = abs(Xc) - abs(Currentdeg);
-        }break;
-
+            break;
         case 4:
         //if positive calibration degree - current degree is between the calibration degree and 180 (Xc:Deg:180)
         //if negative calibration degree - current degree is between -180 and the calibration degree (-180:Deg:Xc)
-        {
             Currentdeg = abs(Currentdeg) - abs(Xc);
-        }break;
+            break;
     }
-
 
     if(Xc >= 0) // checks if it needs to go right or left (by the sutiation
-    {
         if(situation == 2 || situation == 3)
-        {
             Currentdeg = -Currentdeg;
-        }
-    }
     else if(Xc<0)
-    {
         if(situation == 1 || situation == 4)
-        {
             Currentdeg = -Currentdeg;
-        }
-    }
 
     if(Currentdeg > 90)//puts the limits to the servo
-    {
         Currentdeg = 90;
-    }
     if(Currentdeg < -90)
-    {
         Currentdeg = -90;
-    }
 
     Currentdeg = map(Currentdeg, -90, 90, 180, 0);// map the servo degrees to its readable variables
 }
@@ -424,7 +385,6 @@ void mpu6050_get_data()
         // (this lets us immediately read more without waiting for an interrupt)
         fifoCount -= packetSize;
 
-
         #ifdef OUTPUT_READABLE_YAWPITCHROLL
             // display Euler angles in degrees
             mpu.dmpGetQuaternion(&q, fifoBuffer);
@@ -442,7 +402,6 @@ void mpu6050_get_data()
                 Serial.println(Xc_yaw);
             #endif
         #endif
-
 
         // blink LED to indicate activity
         blinkState = !blinkState;
@@ -473,8 +432,7 @@ void nrf24_startup()
 
 void send_data_rf24()
 {
-    if (hasHardware)  // Set in variables at top
-      {
+    if (hasHardware){  // Set in variables at top
         /*********************( Read the Joystick positions )*************************/
         Currentdeg = ypr[0] * 180/M_PI;
         MPUDeg_2_ServoDeg(Xc_yaw,Xnc_yaw);
@@ -485,28 +443,22 @@ void send_data_rf24()
         myData.pitch = Currentdeg;
 
 //		myData.switchOn  = !digitalRead(RESET_YAW);  // Invert the pulldown switch
-      }
-      else
-      {
-        myData.yaw = 89;  // Send some known fake data
-        myData.pitch = 91;
-      }
-
-      myData._micros = micros();  // Send back for timing
-
-      Serial.print(F("Now sending  -  "));
-
-      if (radio.write( &myData, sizeof(myData) ))              // Send data, checking for error ("!" means NOT)
-      {
-        Serial.println(F("Transmit success "));
-        if(radio.isAckPayloadAvailable())
-        {
-          radio.read(&myAck, sizeof (myAck));
-          Serial.println(F("Ack receive success "));
+        } else {
+            myData.yaw = 89;  // Send some known fake data
+            myData.pitch = 91;
         }
-      }
-      else
-        {
+
+        myData._micros = micros();  // Send back for timing
+
+        Serial.print(F("Now sending  -  "));
+
+        if (radio.write( &myData, sizeof(myData) )){ // Send data, checking for error ("!" means NOT)
+            Serial.println(F("Transmit success "));
+            if(radio.isAckPayloadAvailable()){
+                radio.read(&myAck, sizeof (myAck));
+                Serial.println(F("Ack receive success "));
+            }
+        }else{
             Serial.println(F("Transmit failed "));
         }
 
