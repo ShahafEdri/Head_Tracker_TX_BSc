@@ -280,8 +280,7 @@ void mpu6050_startup()
 
         // get expected DMP packet size for later comparison
         packetSize = mpu.dmpGetFIFOPacketSize();
-    }
-    else {
+    } else {
         // ERROR!
         // 1 = initial memory load failed
         // 2 = DMP configuration updates failed
@@ -454,11 +453,11 @@ void send_data_rf24()
 
         if (radio.write( &myData, sizeof(myData) )){ // Send data, checking for error ("!" means NOT)
             Serial.println(F("Transmit success "));
-            if(radio.isAckPayloadAvailable()){
+            if (radio.isAckPayloadAvailable()){
                 radio.read(&myAck, sizeof (myAck));
                 Serial.println(F("Ack receive success "));
             }
-        }else{
+        } else {
             Serial.println(F("Transmit failed "));
         }
 
@@ -524,13 +523,9 @@ void setup()
 
     Xc_pitch = Currentdeg;
     if(Xc_yaw >= 0)
-    {
         Xnc_yaw = Xc_yaw - 180;
-    }
     else if(Xc_yaw<0)
-    {
         Xnc_yaw = Xc_yaw + 180;
-    }
 
     // test conections
     while(radio.isChipConnected() == false){
@@ -585,24 +580,16 @@ void loop()
         //taking messure of current degree on the yaw axis
         Xc_yaw = ypr[0] * 180/M_PI;
         if(Xc_yaw >= 0)
-        {
             Xnc_yaw = Xc_yaw - 180;
-        }
         else if(Xc_yaw<0)
-        {
             Xnc_yaw = Xc_yaw + 180;
-        }
 
         //taking messure of current degree on the pitch axis
         Xc_pitch = ypr[1] * 180/M_PI;
         if(Xc_pitch >= 0)
-        {
             Xnc_pitch = Xc_pitch - 180;
-        }
         else if(Xc_pitch < 0)
-        {
             Xnc_pitch = Xc_pitch + 180;
-        }
     }
     // while (Serial.available() && Serial.read()); // empty buffer again
     #ifdef DEBUG
