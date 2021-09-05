@@ -250,10 +250,12 @@ void mpu6050_startup()
     devStatus = mpu.dmpInitialize();
 
     // supply your own gyro offsets here, scaled for min sensitivity
-    mpu.setXGyroOffset(220);
-    mpu.setYGyroOffset(76);
-    mpu.setZGyroOffset(-85);
-    mpu.setZAccelOffset(1788); // 1688 factory default for my test chip
+    mpu.setXGyroOffset(55);
+    mpu.setYGyroOffset(55);
+    mpu.setZGyroOffset(-42);
+    mpu.setXAccelOffset(-554); // 1688 factory default for my test chip
+    mpu.setYAccelOffset(85); // 1688 factory default for my test chip
+    mpu.setZAccelOffset(3072); // 1688 factory default for my test chip
 
     // make sure it worked (returns 0 if so)
     if (devStatus == 0) {
@@ -545,7 +547,8 @@ void setup()
     Serial.begin(115200);
     while (!Serial); // wait for Leonardo enumeration, others continue immediately
     // NOTE: The "F" in the print statements means "unchangable data; save in Flash Memory to conserve SRAM"
-    Serial.println(F("Send data by nRF24L01 radio to another Arduino"));
+    Serial.println(F("setup begin."));
+    Serial.println(F("Send mpu6050 data by nRF24L01 radio to another Arduino"));
 
     // join I2C bus (I2Cdev library doesn't do this automatically)
     #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
@@ -615,6 +618,7 @@ void loop()
         // other program behavior stuff here
         #ifdef DEBUG
             Serial.println("infinate loop!!!!");
+            delay(500);
         #endif
     }
 
