@@ -97,6 +97,7 @@ MPU6050 mpu;
 #define DEBUG
 #define STM32F1
 // #define ARDUINO_NANO
+// #define WAIT_FOR_INPUT_CHAR_TO_START
 
 #ifdef DEBUG
 uint32_t counter=0;
@@ -226,6 +227,7 @@ void dmpDataReady() {
 // ===              functions to remove code load				===
 // ================================================================
 
+// initilize the mpu6050
 void mpu6050_startup()
 {
     // initialize device
@@ -239,11 +241,13 @@ void mpu6050_startup()
     Serial.println(F("Testing device connections..."));
     Serial.println(mpu.testConnection() ? F("MPU6050 connection successful") : F("MPU6050 connection failed"));
 
+    #ifdef WAIT_FOR_INPUT_CHAR_TO_START
     // wait for ready
-    // Serial.println(F("\nSend any character to begin DMP programming and demo: "));
-    // while (Serial.available() && Serial.read()); // empty buffer
-    // while (!Serial.available());                 // wait for data
-    // while (Serial.available() && Serial.read()); // empty buffer again
+    Serial.println(F("\nSend any character to begin DMP programming and demo: "));
+    while (Serial.available() && Serial.read()); // empty buffer
+    while (!Serial.available());                 // wait for data
+    while (Serial.available() && Serial.read()); // empty buffer again
+    #endif
 
     // load and configure the DMP
     Serial.println(F("Initializing DMP..."));
@@ -289,16 +293,14 @@ void mpu6050_startup()
         Serial.print(devStatus);
         Serial.println(F(")"));
     }
-
     // configure LED for output
     pinMode(LED_PIN, OUTPUT);
 }
 
-void MPUDeg_2_ServoDeg(int Xc, int Xnc)
-//a function that takes the mpu degree and
-//change it to the limitations of the servo motors
-//calbrate - put in limits of (+-90) - change from -90:90 to 0:180
-{
+// a function that takes the mpu degree and
+// change it to the limitations of the servo motors
+// calbrate - put in limits of (+-90) - change from -90:90 to 0:180
+void MPUDeg_2_ServoDeg(int Xc, int Xnc){
     if(Xc>=0) {//checks which calibrations need to be performed
         if(Currentdeg >= -180 && Currentdeg < Xnc)
             situation = 1;
@@ -318,8 +320,7 @@ void MPUDeg_2_ServoDeg(int Xc, int Xnc)
         else if(Currentdeg >= -180 && Currentdeg < Xc)
             situation = 4;
     }
-    switch(situation) // puts the calibration in the right situation
-    {
+    switch(situation){ // puts the calibration in the right situation
         case 1:
         //if positive calibration degree - current degree is between -180 and the opposite circular calibration degree (-180:Deg:Xnc)
         //if negative calibration degree - current degree is between the opposite circular calibration degree and 180 (Xnc:Deg:180)
@@ -357,8 +358,7 @@ void MPUDeg_2_ServoDeg(int Xc, int Xnc)
     Currentdeg = map(Currentdeg, -90, 90, 180, 0);// map the servo degrees to its readable variables
 }
 
-void mpu6050_get_data()
-{
+void mpu6050_get_data(){
     // reset interrupt flag and get INT_STATUS byte
     mpuInterrupt = false;
     mpuIntStatus = mpu.getIntStatus();
@@ -600,5 +600,4 @@ void loop()
         Serial.println();
         counter = micros();
     #endif
-
 }
