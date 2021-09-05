@@ -49,8 +49,8 @@ THE SOFTWARE.
 //#include "MPU6050.h" // not necessary if using MotionApps include file
 
 /*-----( Import needed libraries for radio NRF24 )-----*/
-#include <SPI.h>   // Comes with Arduino IDE
 #include "RF24.h"  // Download and Install (See above)
+// #include <SPI.h>   // Comes with Arduino IDE
 
 
 // Arduino Wire library is required if I2Cdev I2CDEV_ARDUINO_WIRE implementation
@@ -103,21 +103,21 @@ float_t counter_float=0;
 
 /*-----( Declare Constants and Pin Numbers )-----*/
 #ifdef STM32F1 // stm32 pins
-	// The pins to be used for CE and SN
+    // The pins to be used for CE and SN
     #define  CE_PIN  PB1
     #define  CSN_PIN PB0
-	/*-----( Declare Constants and Pin Numbers for mpu6050 IMU )-----*/
-	#define INTERRUPT_PIN PA2  // use pin 2 on Arduino Uno & most boards
-	#define LED_PIN LED_BUILTIN // (Arduino is 13, Teensy is 11, Teensy++ is 6)
-	#define calibration_button_pin PC14// the pin of the calibration button
-#elif #defined ARDUINO_NANO // arduino pins
-	// The pins to be used for CE and SN
+    /*-----( Declare Constants and Pin Numbers for mpu6050 IMU )-----*/
+    #define INTERRUPT_PIN PA2  // use pin 2 on Arduino Uno & most boards
+    #define LED_PIN LED_BUILTIN // (Arduino is 13, Teensy is 11, Teensy++ is 6)
+    #define calibration_button_pin PC14// the pin of the calibration button
+#elif defined(ARDUINO_NANO) // arduino pins
+    // The pins to be used for CE and SN
     #define  CE_PIN  7   
     #define  CSN_PIN 8
-	/*-----( Declare Constants and Pin Numbers for mpu6050 IMU )-----*/
-	#define INTERRUPT_PIN 2  // use pin 2 on Arduino Uno & most boards
-	#define LED_PIN 13 // (Arduino is 13, Teensy is 11, Teensy++ is 6)
-	#define calibration_button_pin 5// the pin of the calibration button
+    /*-----( Declare Constants and Pin Numbers for mpu6050 IMU )-----*/
+    #define INTERRUPT_PIN 2  // use pin 2 on Arduino Uno & most boards
+    #define LED_PIN 13 // (Arduino is 13, Teensy is 11, Teensy++ is 6)
+    #define calibration_button_pin 5// the pin of the calibration button
 #endif
 
 bool blinkState = false;
@@ -150,12 +150,12 @@ byte addresses[][6] = {"1Node", "2Node"}; // These will be the names of the "Pip
 /*-----( received and sent time variables )-----*/
 unsigned long timeNow;  // Used to grab the current time, calculate delays
 unsigned long started_waiting_at;
-boolean RESET_YAW;       // switch state
-boolean timeout;       // Timeout? True or False
+bool RESET_YAW;       // switch state
+bool timeout;       // Timeout? True or False
 
 // Allows testing of radios and code without Joystick hardware. Set 'true' when joystick connected
 //  boolean hasHardware = false;
-  boolean hasHardware = true;
+  bool hasHardware = true;
 
   bool calibration_button = 0 ;//current state of the calibration switch
 
@@ -283,110 +283,109 @@ void MPUDeg_2_ServoDeg(int Xc, int Xnc)
 //change it to the limitations of the servo motors
 //calbrate - put in limits of (+-90) - change from -90:90 to 0:180
 {
-	if(Xc>=0)//checks which calibrations need to be performed
-	{
-		if(Currentdeg >= -180 && Currentdeg < Xnc)
-		{
-			situation = 1;
-		}
-		else if(Currentdeg >= Xnc && Currentdeg < 0)
-		{
-			situation =2;
-		}
-		else if(Currentdeg >= 0 && Currentdeg < Xc)
-		{
-			situation = 3;
-		}
-		else if(Currentdeg >= Xc && Currentdeg < 180)
-		{
-			situation = 4;
-		}
-	}
-	else if(Xc<0)
-	{
-		if(Currentdeg >= Xnc && Currentdeg < 180)
-		{
-			situation = 1;
-		}
-		else if(Currentdeg >= 0 && Currentdeg < Xnc)
-		{
-			situation =2;
-		}
-		else if(Currentdeg >= Xc && Currentdeg < 0)
-		{
-			situation = 3;
-		}
-		else if(Currentdeg >= -180 && Currentdeg < Xc)
-		{
-			situation = 4;
-		}
-	}
-	switch(situation) // puts the calibration in the right situation
-	{
-		case 1:
-		//if positive calibration degree - current degree is between -180 and the opposite circular calibration degree (-180:Deg:Xnc)
-		//if negative calibration degree - current degree is between the opposite circular calibration degree and 180 (Xnc:Deg:180)
-		{
-			Currentdeg = abs(Xnc) + (180 - abs(Currentdeg));
-		}break;
+    if(Xc>=0)//checks which calibrations need to be performed
+    {
+        if(Currentdeg >= -180 && Currentdeg < Xnc)
+        {
+            situation = 1;
+        }
+        else if(Currentdeg >= Xnc && Currentdeg < 0)
+        {
+            situation =2;
+        }
+        else if(Currentdeg >= 0 && Currentdeg < Xc)
+        {
+            situation = 3;
+        }
+        else if(Currentdeg >= Xc && Currentdeg < 180)
+        {
+            situation = 4;
+        }
+    }
+    else if(Xc<0)
+    {
+        if(Currentdeg >= Xnc && Currentdeg < 180)
+        {
+            situation = 1;
+        }
+        else if(Currentdeg >= 0 && Currentdeg < Xnc)
+        {
+            situation =2;
+        }
+        else if(Currentdeg >= Xc && Currentdeg < 0)
+        {
+            situation = 3;
+        }
+        else if(Currentdeg >= -180 && Currentdeg < Xc)
+        {
+            situation = 4;
+        }
+    }
+    switch(situation) // puts the calibration in the right situation
+    {
+        case 1:
+        //if positive calibration degree - current degree is between -180 and the opposite circular calibration degree (-180:Deg:Xnc)
+        //if negative calibration degree - current degree is between the opposite circular calibration degree and 180 (Xnc:Deg:180)
+        {
+            Currentdeg = abs(Xnc) + (180 - abs(Currentdeg));
+        }break;
 
-		case 2:
-		//if positive calibration degree - current degree is between the opposite circular calibration degree and 0 (Xnc:Deg:0)
-		//if negative calibration degree - current degree is between 0 and the opposite circular calibration degree (0:Deg:Xnc)
-		{
-			Currentdeg = abs(Xc) + abs(Currentdeg);
-		}break;
+        case 2:
+        //if positive calibration degree - current degree is between the opposite circular calibration degree and 0 (Xnc:Deg:0)
+        //if negative calibration degree - current degree is between 0 and the opposite circular calibration degree (0:Deg:Xnc)
+        {
+            Currentdeg = abs(Xc) + abs(Currentdeg);
+        }break;
 
-		case 3:
-		//if positive calibration degree - current degree is between 0 and the calibration degree (0:Deg:Xc)
-		//if negative calibration degree - current degree is between the calibration degree and 0 (Xc:Deg:0)
-		{
-			Currentdeg = abs(Xc) - abs(Currentdeg);
-		}break;
+        case 3:
+        //if positive calibration degree - current degree is between 0 and the calibration degree (0:Deg:Xc)
+        //if negative calibration degree - current degree is between the calibration degree and 0 (Xc:Deg:0)
+        {
+            Currentdeg = abs(Xc) - abs(Currentdeg);
+        }break;
 
-		case 4:
-		//if positive calibration degree - current degree is between the calibration degree and 180 (Xc:Deg:180)
-		//if negative calibration degree - current degree is between -180 and the calibration degree (-180:Deg:Xc)
-		{
-			Currentdeg = abs(Currentdeg) - abs(Xc);
-		}break;
-	}
+        case 4:
+        //if positive calibration degree - current degree is between the calibration degree and 180 (Xc:Deg:180)
+        //if negative calibration degree - current degree is between -180 and the calibration degree (-180:Deg:Xc)
+        {
+            Currentdeg = abs(Currentdeg) - abs(Xc);
+        }break;
+    }
 
 
-	if(Xc >= 0) // checks if it needs to go right or left (by the sutiation
-	{
-		if(situation == 2 || situation == 3)
-		{
-			Currentdeg = -Currentdeg;
-		}
-	}
-	else if(Xc<0)
-	{
-		if(situation == 1 || situation == 4)
-		{
-			Currentdeg = -Currentdeg;
-		}
-	}
+    if(Xc >= 0) // checks if it needs to go right or left (by the sutiation
+    {
+        if(situation == 2 || situation == 3)
+        {
+            Currentdeg = -Currentdeg;
+        }
+    }
+    else if(Xc<0)
+    {
+        if(situation == 1 || situation == 4)
+        {
+            Currentdeg = -Currentdeg;
+        }
+    }
 
-	if(Currentdeg > 90)//puts the limits to the servo
-	{
-		Currentdeg = 90;
-	}
-	if(Currentdeg < -90)
-	{
-		Currentdeg = -90;
-	}
+    if(Currentdeg > 90)//puts the limits to the servo
+    {
+        Currentdeg = 90;
+    }
+    if(Currentdeg < -90)
+    {
+        Currentdeg = -90;
+    }
 
-	Currentdeg = map(Currentdeg, -90, 90, 180, 0);// map the servo degrees to its readable variables
+    Currentdeg = map(Currentdeg, -90, 90, 180, 0);// map the servo degrees to its readable variables
 
-	#ifdef DEBUG
-    // blink LED to indicate activity
-    counter = micros() - counter;
-    counter_float = (float)counter/1000000; //in seconds
-    Serial.printf("operating in %d Hz",(uint32_t)(1/counter_float));
-    // Serial.printf("operating in %d",(counter));
-    Serial.println();
-    counter = micros();
+    #ifdef DEBUG
+        counter = micros() - counter;
+        counter_float = (float)counter/1000000; //in seconds
+        Serial.printf("operating in %d Hz",(uint32_t)(1/counter_float));
+        // Serial.printf("operating in %d",(counter));
+        Serial.println();
+        counter = micros();
     #endif
 
 }
@@ -428,14 +427,16 @@ void mpu6050_get_data()
             mpu.dmpGetGravity(&gravity, &q);
             mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
 
-//            Serial.print("ypr\t");
-//            Serial.print(ypr[0] * 180/M_PI);
-//            Serial.print("\t");
-//            Serial.print(ypr[1] * 180/M_PI);
-//            Serial.print("\t");
-//            Serial.println(ypr[2] * 180/M_PI);
-//            Serial.print("Xc_yaw = ");
-//            Serial.println(Xc_yaw);
+            #ifdef DEBUG
+                Serial.print("ypr\t");
+                Serial.print(ypr[0] * 180/M_PI);
+                Serial.print("\t");
+                Serial.print(ypr[1] * 180/M_PI);
+                Serial.print("\t");
+                Serial.println(ypr[2] * 180/M_PI);
+                Serial.print("Xc_yaw = ");
+                Serial.println(Xc_yaw);
+            #endif
         #endif
 
 
@@ -447,67 +448,67 @@ void mpu6050_get_data()
 
 void nrf24_startup()
 {
-	radio.begin();          // Initialize the nRF24L01 Radio
-	radio.setChannel(108);  // Above most WiFi frequencies
-	radio.setDataRate(RF24_250KBPS); // Fast enough.. Better range
+    radio.begin();          // Initialize the nRF24L01 Radio
+    radio.setChannel(108);  // Above most WiFi frequencies
+    radio.setDataRate(RF24_250KBPS); // Fast enough.. Better range
 
-	// Set the Power Amplifier Level low to prevent power supply related issues since this is a
-	// getting_started sketch, and the likelihood of close proximity of the devices. RF24_PA_MAX is default.
-	// PALevelcan be one of four levels: RF24_PA_MIN, RF24_PA_LOW, RF24_PA_HIGH and RF24_PA_MAX
-	radio.setPALevel(RF24_PA_MAX);
+    // Set the Power Amplifier Level low to prevent power supply related issues since this is a
+    // getting_started sketch, and the likelihood of close proximity of the devices. RF24_PA_MAX is default.
+    // PALevelcan be one of four levels: RF24_PA_MIN, RF24_PA_LOW, RF24_PA_HIGH and RF24_PA_MAX
+    radio.setPALevel(RF24_PA_MAX);
 
-	radio.enableAckPayload();
-	radio.enableDynamicAck();
-	radio.setAutoAck(true);
-	radio.setRetries(15, 15);
+    radio.enableAckPayload();
+    radio.enableDynamicAck();
+    radio.setAutoAck(true);
+    radio.setRetries(15, 15);
 
-	// Open a writing and reading pipe on each radio, with opposite addresses
-	radio.openWritingPipe(addresses[0]);
+    // Open a writing and reading pipe on each radio, with opposite addresses
+    radio.openWritingPipe(addresses[0]);
 //////////////RF24 initialization End/////////////////
 }
 
 void send_data_rf24()
 {
-	if (hasHardware)  // Set in variables at top
-	  {
-		/*********************( Read the Joystick positions )*************************/
+    if (hasHardware)  // Set in variables at top
+      {
+        /*********************( Read the Joystick positions )*************************/
         Currentdeg = ypr[0] * 180/M_PI;
-		MPUDeg_2_ServoDeg(Xc_yaw,Xnc_yaw);
-		myData.yaw = Currentdeg;
+        MPUDeg_2_ServoDeg(Xc_yaw,Xnc_yaw);
+        myData.yaw = Currentdeg;
 
         Currentdeg = ypr[1] * 180/M_PI;
-		MPUDeg_2_ServoDeg(Xc_pitch,Xnc_pitch);
-		myData.pitch = Currentdeg;
+        MPUDeg_2_ServoDeg(Xc_pitch,Xnc_pitch);
+        myData.pitch = Currentdeg;
 
 //		myData.switchOn  = !digitalRead(RESET_YAW);  // Invert the pulldown switch
-	  }
-	  else
-	  {
-		myData.yaw = 89;  // Send some known fake data
-		myData.pitch = 91;
-	  }
+      }
+      else
+      {
+        myData.yaw = 89;  // Send some known fake data
+        myData.pitch = 91;
+      }
 
-	  myData._micros = micros();  // Send back for timing
+      myData._micros = micros();  // Send back for timing
 
-	  Serial.print(F("Now sending  -  "));
+      Serial.print(F("Now sending  -  "));
 
-	  if (radio.write( &myData, sizeof(myData) ))              // Send data, checking for error ("!" means NOT)
-	  {
-		Serial.println(F("Transmit success "));
-		if(radio.isAckPayloadAvailable())
-		{
-		  radio.read(&myAck, sizeof (myAck));
-		  Serial.println(F("Ack receive success "));
-		}
-	  }
-	  else
-		{
-			Serial.println(F("Transmit failed "));
-		}
+      if (radio.write( &myData, sizeof(myData) ))              // Send data, checking for error ("!" means NOT)
+      {
+        Serial.println(F("Transmit success "));
+        if(radio.isAckPayloadAvailable())
+        {
+          radio.read(&myAck, sizeof (myAck));
+          Serial.println(F("Ack receive success "));
+        }
+      }
+      else
+        {
+            Serial.println(F("Transmit failed "));
+        }
 
-	timeNow = micros();
+    timeNow = micros();
 
-	// Show the data that was transmitted and acknowledgment payload
+    // Show the data that was transmitted and acknowledgment payload
 //	Serial.print(F("Sent "));
 //	Serial.print(timeNow);
 //	Serial.print(F(", Got response "));
@@ -520,8 +521,8 @@ void send_data_rf24()
 //	Serial.println(F(" done "));
 //	Serial.println();
 
-	  // Send again after delay. When working OK, change to something like 100
-	  delay(5);
+      // Send again after delay. When working OK, change to something like 100
+      delay(5);
 }
 
 
@@ -543,8 +544,8 @@ void setup()
     // NOTE: The "F" in the print statements means "unchangable data; save in Flash Memory to conserve SRAM"
     Serial.println(F("Send data by nRF24L01 radio to another Arduino"));
 
-	// join I2C bus (I2Cdev library doesn't do this automatically)
-	#if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
+    // join I2C bus (I2Cdev library doesn't do this automatically)
+    #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
         Wire.begin();
         Wire.setClock(400000); // 400kHz I2C clock. Comment this line if having compilation difficulties
     #elif I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_FASTWIRE
@@ -565,19 +566,23 @@ void setup()
 
     Xc_pitch = Currentdeg;
     if(Xc_yaw >= 0)
-	{
-    	Xnc_yaw = Xc_yaw - 180;
-	}
-	else if(Xc_yaw<0)
-	{
-		Xnc_yaw = Xc_yaw + 180;
-	}
+    {
+        Xnc_yaw = Xc_yaw - 180;
+    }
+    else if(Xc_yaw<0)
+    {
+        Xnc_yaw = Xc_yaw + 180;
+    }
 
-	// test conections
-	while(radio.isChipConnected() == false)
-		Serial.println("nRF24 is NOT connected");
-	while(mpu.testConnection() == false)
-		Serial.println("mpu6050 is NOT connected");
+    // test conections
+    while(radio.isChipConnected() == false){
+        Serial.println("nRF24 is NOT connected");
+        delay(2000);
+    }
+    while(mpu.testConnection() == false){
+        Serial.println("mpu6050 is NOT connected");
+        delay(2000);
+    }
 
 }
 
@@ -594,13 +599,16 @@ void loop()
     // if programming failed, don't try to do anything TO_DO consider taking this line out
     if (!dmpReady)
     {
-    	return;
+        #if defined(DEBUG)
+            Serial.printf("dmp is not ready");
+        #endif
+        return;
     }
 
     // wait for MPU interrupt or extra packet(s) available
     while (!mpuInterrupt && fifoCount < packetSize)
     {
-		// other program behavior stuff here
+        // other program behavior stuff here
     }
 
     mpu6050_get_data();
@@ -611,29 +619,27 @@ void loop()
 //    while (Serial.available() && Serial.read()); // empty buffer
     if (digitalRead(calibration_button_pin) == 0)		// check if button was pressed to calibrate
     {
-    	//taking messure of current degree on the yaw axis
+        //taking messure of current degree on the yaw axis
         Xc_yaw = ypr[0] * 180/M_PI;
         if(Xc_yaw >= 0)
-    	{
-        	Xnc_yaw = Xc_yaw - 180;
-    	}
-    	else if(Xc_yaw<0)
-    	{
-    		Xnc_yaw = Xc_yaw + 180;
-    	}
+        {
+            Xnc_yaw = Xc_yaw - 180;
+        }
+        else if(Xc_yaw<0)
+        {
+            Xnc_yaw = Xc_yaw + 180;
+        }
 
         //taking messure of current degree on the pitch axis
         Xc_pitch = ypr[1] * 180/M_PI;
-		if(Xc_pitch >= 0)
-		{
-			Xnc_pitch = Xc_pitch - 180;
-		}
-		else if(Xc_pitch < 0)
-		{
-			Xnc_pitch = Xc_pitch + 180;
-		}
-
-
+        if(Xc_pitch >= 0)
+        {
+            Xnc_pitch = Xc_pitch - 180;
+        }
+        else if(Xc_pitch < 0)
+        {
+            Xnc_pitch = Xc_pitch + 180;
+        }
     }
 //    while (Serial.available() && Serial.read()); // empty buffer again
 
