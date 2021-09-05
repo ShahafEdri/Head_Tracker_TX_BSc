@@ -120,6 +120,13 @@ float_t counter_float=0;
     #define calibration_button_pin 5// the pin of the calibration button
 #endif
 
+
+#ifndef M_PI
+    #define M_PI 3.14159265358979323846
+#endif
+
+
+
 bool blinkState = false;
 
 // MPU control/status vars
