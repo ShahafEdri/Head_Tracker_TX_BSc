@@ -94,7 +94,7 @@ MPU6050 mpu;
 // more info, see: http://en.wikipedia.org/wiki/Gimbal_lock)
 #define OUTPUT_READABLE_YAWPITCHROLL
 
-#define DEBUG
+// #define DEBUG
 #define STM32F1
 // #define ARDUINO_NANO
 // #define WAIT_FOR_INPUT_CHAR_TO_START
@@ -233,6 +233,7 @@ void mpu6050_startup()
     // initialize device
     Serial.println(F("reseting MPU6050..."));
     mpu.reset();
+    delay(50);
     Serial.println(F("Initializing I2C devices..."));
     mpu.initialize();
     pinMode(INTERRUPT_PIN, INPUT); // set interrupt pin, to know wether the mpu6050 is ready
@@ -240,6 +241,7 @@ void mpu6050_startup()
     // verify connection
     Serial.println(F("Testing device connections..."));
     Serial.println(mpu.testConnection() ? F("MPU6050 connection successful") : F("MPU6050 connection failed"));
+    // TODO add some sort of wait for the mpu6050 connection success
 
     #ifdef WAIT_FOR_INPUT_CHAR_TO_START
     // wait for ready
@@ -367,12 +369,14 @@ void mpu6050_get_data(){
     fifoCount = mpu.getFIFOCount();
 
     // check for overflow (this should never happen unless our code is too inefficient)
-    if ((mpuIntStatus & 0x10) || fifoCount == 1024) {
+    if ((mpuIntStatus & 0x10) || fifoCount >= 1024) {
         // reset so we can continue cleanly
         mpu.resetFIFO();
+        delayMicroseconds(200);
+        fifoCount = mpu.getFIFOCount();
         Serial.println(F("FIFO overflow!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"));
 
-    // otherwise, check for DMP data ready interrupt (this should happen frequently)
+      // otherwise, check for DMP data ready interrupt (this should happen frequently)
     } else if (mpuIntStatus & 0x02) {
         // wait for correct available data length, should be a VERY short wait
         while (fifoCount < packetSize) fifoCount = mpu.getFIFOCount();
@@ -477,7 +481,7 @@ void send_data_rf24()
 //	Serial.println();
 
       // Send again after delay. When working OK, change to something like 100
-      delay(5);
+      delayMicroseconds(500);
 }
 
 
@@ -534,8 +538,9 @@ void setup()
     }
     while(mpu.testConnection() == false){
         Serial.println("mpu6050 is NOT connected");
-        mpu.reset();
         delay(2000);
+        mpu.reset();
+        delay(50);
     }
 
 }
@@ -554,25 +559,23 @@ void loop()
     if (!dmpReady)
     {
         #if defined(DEBUG)
-            Serial.printf("dmp is not ready");
+            Serial.printf("FAIL -> DMP is not ready");
+            delay(3000);
         #endif
         return;
     }
 
     // wait for MPU interrupt or extra packet(s) available
     while (!mpuInterrupt && fifoCount < packetSize)
-    {
         // other program behavior stuff here
         #ifdef DEBUG
-            Serial.println("infinate loop!!!!");
-            delay(500);
+        Serial.print(".");
         #endif
-    }
 
     mpu6050_get_data();
 
     send_data_rf24();
-    delay(3);
+    delayMicroseconds(500);
 
 //    while (Serial.available() && Serial.read()); // empty buffer
     if (digitalRead(calibration_button_pin) == 0)		// check if button was pressed to calibrate
