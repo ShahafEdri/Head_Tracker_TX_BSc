@@ -3,7 +3,9 @@
 #include "Servo.h"
 
 
+#define DEBUG
 #define STM32F1
+// #define ARDUINO_NANO
 
 /*-----( Declare Constants and Pin Numbers )-----*/
 #ifdef STM32F1
