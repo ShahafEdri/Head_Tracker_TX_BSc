@@ -42,4 +42,4 @@ test/README
 lib/README
 
 # log files
-platformio-device-monitor*.log
+./platformio-device-monitor*.log

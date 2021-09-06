@@ -1,0 +1,4343 @@
+COMMENTS:
+gyro was left not changed
+DLPF was left not changed
+
+
+************************************************************************************************************
+setup begin.
+Send mpu6050 data by nRF24L01 radio to another Arduino
+
+reseting MPU6050...
+
+Initializing I2C devices...
+
+Testing device connections...
+
+MPU6050 connection successful
+
+Initializing DMP...
+
+Checking hardware revision...
+
+Revision @ user[16][6] = 4D
+
+Resetting memory bank selection to 0...
+
+>*......>......
+//           X Accel  Y Accel  Z Accel   X Gyro   Y Gyro   Z Gyro
+//OFFSETS    -4068,      -3,    3534,      45,      56,     -42
+Enabling DMP...
+
+Enabling interrupt detection (Arduino external interrupt 194)...
+
+DMP ready! Waiting for first interrupt...
+
+ypr	0.00	-0.01	0.44
+
+Xc_yaw = 0
+
+ypr	0.00	-0.01	0.44
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+operating in 0 Hz
+
+ypr	0.00	-0.01	0.43
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	0.00	-0.01	0.43
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	0.00	-0.01	0.43
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 79 Hz
+
+ypr	0.00	0.00	0.43
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 87 Hz
+
+ypr	0.00	0.00	0.43
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 87 Hz
+
+ypr	0.00	0.00	0.43
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 84 Hz
+
+ypr	-0.00	0.01	0.42
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.01	0.42
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.01	0.41
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.00	0.01	0.41
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 78 Hz
+
+ypr	-0.00	0.01	0.41
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.01	0.40
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.01	0.40
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 84 Hz
+
+ypr	-0.00	0.01	0.39
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.02	0.39
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.02	0.39
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.00	0.02	0.38
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 80 Hz
+
+ypr	-0.00	0.03	0.38
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.00	0.03	0.38
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.03	0.38
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	0.01	0.03	0.38
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	0.01	0.03	0.38
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.03	0.37
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	0.01	0.04	0.37
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 80 Hz
+
+ypr	-0.00	0.04	0.37
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	0.01	0.04	0.36
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.04	0.36
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 84 Hz
+
+ypr	-0.00	0.05	0.36
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.05	0.36
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.05	0.35
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.00	0.05	0.35
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 79 Hz
+
+ypr	-0.00	0.05	0.35
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.05	0.34
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.05	0.34
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.05	0.34
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.05	0.34
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.06	0.34
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.00	0.06	0.34
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 80 Hz
+
+ypr	-0.01	0.06	0.33
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.06	0.33
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.06	0.33
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.06	0.32
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.06	0.32
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.06	0.32
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.06	0.32
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 82 Hz
+
+ypr	-0.01	0.07	0.31
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.07	0.31
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.07	0.31
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.07	0.31
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 77 Hz
+
+ypr	-0.01	0.07	0.31
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.07	0.31
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.07	0.31
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 83 Hz
+
+ypr	-0.01	0.07	0.30
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.08	0.30
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.08	0.30
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.08	0.29
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 78 Hz
+
+ypr	-0.01	0.08	0.29
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.08	0.29
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.08	0.29
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 84 Hz
+
+ypr	-0.01	0.08	0.29
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.09	0.29
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.09	0.29
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.09	0.29
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 79 Hz
+
+ypr	-0.01	0.09	0.28
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.09	0.28
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.10	0.27
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.10	0.27
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.10	0.27
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.10	0.27
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.10	0.27
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 81 Hz
+
+FIFO overflow!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 77 Hz
+
+ypr	-0.01	0.13	0.23
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.13	0.23
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.13	0.23
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.13	0.22
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.13	0.22
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.13	0.22
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.13	0.22
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 81 Hz
+
+ypr	-0.01	0.13	0.22
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.13	0.22
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.13	0.22
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.14	0.22
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 77 Hz
+
+ypr	-0.01	0.14	0.22
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.14	0.22
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.14	0.21
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 82 Hz
+
+ypr	-0.01	0.14	0.21
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.14	0.21
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.15	0.21
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.15	0.20
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 78 Hz
+
+ypr	-0.01	0.15	0.20
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.15	0.20
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.15	0.20
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 84 Hz
+
+ypr	-0.01	0.15	0.20
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.15	0.20
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.15	0.20
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.15	0.20
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 79 Hz
+
+ypr	-0.01	0.15	0.20
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.15	0.20
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.15	0.19
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.15	0.19
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.15	0.19
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.15	0.19
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.16	0.19
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 80 Hz
+
+ypr	-0.01	0.16	0.18
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.16	0.18
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.16	0.18
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.16	0.18
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.16	0.18
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.16	0.17
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.17	0.17
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 81 Hz
+
+ypr	-0.01	0.17	0.17
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.17	0.17
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.17	0.17
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.17	0.17
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 77 Hz
+
+ypr	-0.01	0.17	0.17
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.17	0.17
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.17	0.17
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 82 Hz
+
+ypr	-0.01	0.17	0.16
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.17	0.16
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.17	0.16
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.17	0.16
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 78 Hz
+
+ypr	-0.01	0.17	0.16
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.17	0.16
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.17	0.16
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 84 Hz
+
+ypr	-0.01	0.17	0.16
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.18	0.15
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.18	0.15
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.18	0.15
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 79 Hz
+
+ypr	-0.01	0.18	0.15
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.18	0.15
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.18	0.15
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.18	0.15
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.19	0.15
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.19	0.15
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.19	0.15
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 80 Hz
+
+ypr	-0.01	0.19	0.15
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.19	0.15
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.19	0.15
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.19	0.15
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.19	0.15
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+FIFO overflow!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 82 Hz
+
+ypr	-0.01	0.20	0.12
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.20	0.12
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 81 Hz
+
+ypr	-0.01	0.20	0.12
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.20	0.12
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.21	0.12
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.20	0.12
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.21	0.12
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.20	0.12
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.21	0.11
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 82 Hz
+
+ypr	-0.01	0.20	0.11
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.21	0.11
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.21	0.11
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.21	0.11
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 77 Hz
+
+ypr	-0.01	0.21	0.11
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.21	0.11
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.21	0.11
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 83 Hz
+
+ypr	-0.01	0.21	0.10
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.21	0.10
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.21	0.10
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.21	0.10
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 79 Hz
+
+ypr	-0.01	0.21	0.10
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.21	0.10
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.21	0.10
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 84 Hz
+
+ypr	-0.01	0.21	0.10
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.21	0.10
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.21	0.10
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.00	0.22	0.10
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 80 Hz
+
+ypr	-0.01	0.21	0.10
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.21	0.10
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.21	0.10
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.22	0.10
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.22	0.10
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.22	0.10
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.22	0.10
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 80 Hz
+
+ypr	-0.01	0.22	0.10
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.22	0.10
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.22	0.09
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.22	0.09
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.22	0.09
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.22	0.09
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.22	0.09
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 82 Hz
+
+ypr	-0.01	0.22	0.09
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.22	0.09
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.22	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.22	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 77 Hz
+
+ypr	-0.01	0.22	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.22	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.22	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 83 Hz
+
+ypr	-0.01	0.22	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.22	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.22	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.22	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 78 Hz
+
+ypr	-0.01	0.22	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.22	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.22	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 84 Hz
+
+ypr	-0.01	0.22	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.22	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.22	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.23	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 79 Hz
+
+ypr	-0.01	0.23	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.23	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.23	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.23	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.22	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.23	0.07
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.22	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 81 Hz
+
+ypr	-0.01	0.23	0.07
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.23	0.08
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.23	0.07
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+FIFO overflow!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 82 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 81 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 77 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 82 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 78 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 84 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 79 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 80 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.06
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.05
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.05
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 81 Hz
+
+ypr	-0.01	0.24	0.05
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.05
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.05
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.05
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 77 Hz
+
+ypr	-0.01	0.24	0.05
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.05
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.24	0.05
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 82 Hz
+
+ypr	-0.01	0.24	0.05
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.05
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.05
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.05
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 78 Hz
+
+ypr	-0.01	0.24	0.05
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.05
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.05
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 84 Hz
+
+ypr	-0.01	0.24	0.05
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.04
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.05
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.04
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 79 Hz
+
+ypr	-0.01	0.24	0.04
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.04
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.05
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.02	0.24	0.04
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.25	0.04
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.04
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.25	0.04
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 80 Hz
+
+ypr	-0.01	0.24	0.04
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.04
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.04
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.24	0.04
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.04
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.25	0.04
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.01	0.24	0.04
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 81 Hz
+
+ypr	-0.01	0.24	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+FIFO overflow!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 82 Hz
+
+ypr	-0.01	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	0.01	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 81 Hz
+
+ypr	0.01	0.26	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.02	0.24	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	0.01	0.27	0.02
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.24	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	0.01	0.26	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	0.01	0.26	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 81 Hz
+
+ypr	-0.01	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	0.01	0.27	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	0.01	0.27	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.26	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 80 Hz
+
+ypr	-0.00	0.26	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.26	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.01	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.26	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.26	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.00	0.26	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 81 Hz
+
+ypr	-0.00	0.26	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.26	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.26	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.26	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 77 Hz
+
+ypr	-0.00	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.26	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.00	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 83 Hz
+
+ypr	-0.00	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 78 Hz
+
+ypr	-0.00	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 84 Hz
+
+ypr	-0.00	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.00	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.26	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.00	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 79 Hz
+
+ypr	-0.00	0.25	0.03
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.00	0.25	0.02
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.02
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.00	0.25	0.02
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.02
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.02
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.02
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 80 Hz
+
+ypr	-0.00	0.25	0.02
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.02
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.02
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.26	0.02
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.02
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.02
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.00	0.25	0.02
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 81 Hz
+
+ypr	-0.00	0.26	0.02
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.02
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.02
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.02
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 77 Hz
+
+ypr	-0.00	0.25	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.00	0.25	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 82 Hz
+
+ypr	-0.00	0.25	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.00	0.25	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+FIFO overflow!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 82 Hz
+
+FIFO overflow!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 82 Hz
+
+ypr	-0.00	0.25	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 77 Hz
+
+ypr	-0.00	0.25	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 82 Hz
+
+ypr	-0.00	0.25	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 78 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 84 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	0.01	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 78 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	0.01	0.25	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 84 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 79 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 80 Hz
+
+ypr	0.01	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 85 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 80 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	0.00	0.24	0.00
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 87 Hz
+
+ypr	0.01	0.24	0.00
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	0.01	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 81 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	0.01	0.24	0.00
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	0.01	0.24	0.00
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	0.00	0.24	0.00
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 87 Hz
+
+ypr	0.00	0.24	0.00
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 87 Hz
+
+ypr	0.00	0.24	0.00
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 79 Hz
+
+ypr	0.00	0.24	0.00
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 87 Hz
+
+ypr	0.00	0.24	0.00
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 87 Hz
+
+ypr	0.00	0.24	0.00
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 83 Hz
+
+ypr	0.00	0.24	0.00
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 87 Hz
+
+ypr	0.00	0.24	0.00
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 87 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 77 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 83 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.24	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 78 Hz
+
+ypr	0.01	0.25	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.25	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	0.01	0.25	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 83 Hz
+
+ypr	-0.00	0.25	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	0.01	0.25	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+FIFO overflow!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 82 Hz
+
+ypr	-0.00	0.26	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.26	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 77 Hz
+
+ypr	-0.00	0.26	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.26	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.26	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 83 Hz
+
+ypr	-0.00	0.26	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.26	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	0.01	0.26	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 86 Hz
+
+ypr	-0.00	0.26	0.01
+
+Xc_yaw = 0
+
+Now sending  -  Transmit success 
+
+Ack receive success 
+
+operating in 77 Hz
+
+y
