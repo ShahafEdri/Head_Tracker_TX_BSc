@@ -296,6 +296,23 @@ void mpu6050_startup()
         Serial.println(F("DMP ready! Waiting for first interrupt..."));
         dmpReady = true;
 
+        // read DLPF mode rate of sample (Digital Low-Pass Filter)
+        Serial.print(F("DLPF mode READ -> "));
+        Serial.println(mpu.getDLPFMode());
+        Serial.print(F("DLPF mode SET to -> "));
+        uint8_t DLPFMode = 1;
+        mpu.setDLPFMode(DLPFMode);
+        Serial.println(mpu.getDLPFMode());
+        // read gyro size rate of sample
+        uint8_t gyroDivisionRate;
+        gyroDivisionRate = mpu.getRate();
+        Serial.print(F("gyro sample rate READ -> "));
+        Serial.println(gyroDivisionRate);
+        gyroDivisionRate = 7;
+        mpu.setRate(gyroDivisionRate);
+        Serial.print(F("new gyro sample rate SET -> "));
+        Serial.println(mpu.getRate());
+        
         // get expected DMP packet size for later comparison
         packetSize = mpu.dmpGetFIFOPacketSize();
     } else {
