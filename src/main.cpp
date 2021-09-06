@@ -94,7 +94,7 @@ MPU6050 mpu;
 // more info, see: http://en.wikipedia.org/wiki/Gimbal_lock)
 #define OUTPUT_READABLE_YAWPITCHROLL
 
-// #define DEBUG
+#define DEBUG
 #define STM32F1
 // #define ARDUINO_NANO
 // #define WAIT_FOR_INPUT_CHAR_TO_START
@@ -104,6 +104,18 @@ uint32_t counter=0;
 float_t counter_float=0;
 #endif
 
+//#define DEBUG
+#ifdef DEBUG
+    #define DEBUG_PRINT(x) Serial.print(x)
+    #define DEBUG_PRINTF(x, y) Serial.print(x, y)
+    #define DEBUG_PRINTLN(x) Serial.println(x)
+    #define DEBUG_PRINTLNF(x, y) Serial.println(x, y)
+#else
+    #define DEBUG_PRINT(x)
+    #define DEBUG_PRINTF(x, y)
+    #define DEBUG_PRINTLN(x)
+    #define DEBUG_PRINTLNF(x, y)
+#endif
 
 /*-----( Declare Constants and Pin Numbers )-----*/
 #ifdef STM32F1 // stm32 pins
