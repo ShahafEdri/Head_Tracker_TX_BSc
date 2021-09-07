@@ -400,9 +400,11 @@ void mpu6050_get_data(){
     // check for overflow (this should never happen unless our code is too inefficient)
     if ((mpuIntStatus & 0x10) || fifoCount >= 1024) {
         // reset so we can continue cleanly
+        Serial.printf("fifocount=%d\n", fifoCount);
         mpu.resetFIFO();
         delayMicroseconds(200);
         fifoCount = mpu.getFIFOCount();
+        Serial.printf("after reset, fifocount=%d\n", fifoCount);
         Serial.println(F("FIFO overflow!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"));
 
       // otherwise, check for DMP data ready interrupt (this should happen frequently)
@@ -598,8 +600,10 @@ void loop()
     while (!mpuInterrupt && fifoCount < packetSize){
         // other program behavior stuff here
         #ifdef DEBUG
-        Serial.print(".");
+        Serial.printf("main loop -> fifocount=%d\n", fifoCount);
+        Serial.printf("main loop -> mpu interrupt=%d\n", mpuInterrupt);
         #endif
+        Serial.println(".");
         fifoCount = mpu.getFIFOCount();
     }
 
