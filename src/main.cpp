@@ -406,7 +406,7 @@ void mpu6050_get_data(){
         Serial.println(F("FIFO overflow!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"));
 
       // otherwise, check for DMP data ready interrupt (this should happen frequently)
-    } else if (mpuIntStatus & 0x02) {
+    } else if (mpuIntStatus & 0x03) { //FIXME check if this is really necessary 
         // wait for correct available data length, should be a VERY short wait
         while (fifoCount < packetSize) fifoCount = mpu.getFIFOCount();
 
@@ -595,11 +595,13 @@ void loop()
     }
 
     // wait for MPU interrupt or extra packet(s) available
-    while (!mpuInterrupt && fifoCount < packetSize)
+    while (!mpuInterrupt && fifoCount < packetSize){
         // other program behavior stuff here
         #ifdef DEBUG
         Serial.print(".");
         #endif
+        fifoCount = mpu.getFIFOCount();
+    }
 
     mpu6050_get_data();
 
