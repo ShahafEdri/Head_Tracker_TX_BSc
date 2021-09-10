@@ -18,7 +18,7 @@
 #ifdef STM32F1
 #define servo_yaw_pin A1
 #define servo_pitch_pin A0
-#elif #defined ARDUINO_NANO // arduino pins
+#elif defined(ARDUINO_NANO) // arduino pins
 #define servo_yaw_pin 2
 #define servo_pitch_pin 3
 #endif
@@ -39,7 +39,7 @@ void setup()
     servo_pitch.write(90);
 
 #ifdef TESTBYMICROSECONDS
-    data = map(90, 0, 180, 500, 2400);
+    data = map(90, 0, 180, 500, 2400); // map servo the the middle at the beginning
 #endif
 
     pinMode(LED_BUILTIN, OUTPUT);
