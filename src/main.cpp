@@ -238,10 +238,10 @@ void mpu6050_startup()
 
     // initialize device
     Serial.println(F("reseting MPU6050..."));
-    mpu.reset();
-    delay(50);
+    mpu.reset(); // reset the mpu6050
+    delay(50);   // to wait for mpu.reset to activate
     Serial.println(F("Initializing I2C devices..."));
-    mpu.initialize();
+    mpu.initialize(); // set basic configurations to the mpu6050
 
     // verify connection
     Serial.println(F("Testing device connections..."));
@@ -261,9 +261,10 @@ void mpu6050_startup()
 
     // load and configure the DMP
     Serial.println(F("Initializing DMP..."));
-    devStatus = mpu.dmpInitialize();
+    devStatus = mpu.dmpInitialize(); // load configurations to the mpu6050 DMP unit
 
     // supply your own gyro offsets here, scaled for min sensitivity
+    //set offsets to reduce calibration time
     mpu.setXGyroOffset(55);
     mpu.setYGyroOffset(55);
     mpu.setZGyroOffset(-42);
@@ -271,7 +272,7 @@ void mpu6050_startup()
     mpu.setYAccelOffset(85);   // 1688 factory default for my test chip
     mpu.setZAccelOffset(3072); // 1688 factory default for my test chip
 
-    // make sure it worked (returns 0 if so)
+    // make sure DMP initilization succeeded (returns 0 if so)
     if (devStatus == 0)
     {
         // Calibration Time: generate offsets and calibrate our MPU6050
@@ -280,14 +281,14 @@ void mpu6050_startup()
         mpu.PrintActiveOffsets();
         // turn on the DMP, now that it's ready
         Serial.println(F("Enabling DMP..."));
-        mpu.setDMPEnabled(true);
+        mpu.setDMPEnabled(true); // enable DMP
 
         // enable Arduino interrupt detection
         Serial.print(F("Enabling interrupt detection (Arduino external interrupt "));
         Serial.print(digitalPinToInterrupt(INTERRUPT_PIN));
         Serial.println(F(")..."));
-        attachInterrupt(digitalPinToInterrupt(INTERRUPT_PIN), dmpDataReady, RISING);
-        mpuIntStatus = mpu.getIntStatus();
+        attachInterrupt(digitalPinToInterrupt(INTERRUPT_PIN), dmpDataReady, RISING); // attach mpu050 interrupt
+        mpuIntStatus = mpu.getIntStatus();                                           // get mpu6050 interrupt status to send first reading
 
         // set our DMP Ready flag so the main loop() function knows it's okay to use it
         Serial.println(F("DMP ready! Waiting for first interrupt..."));
@@ -298,7 +299,7 @@ void mpu6050_startup()
         Serial.println(mpu.getDLPFMode());
         Serial.print(F("DLPF mode SET to -> "));
         uint8_t DLPFMode = 1;
-        mpu.setDLPFMode(DLPFMode);
+        mpu.setDLPFMode(DLPFMode); // change gyro sample rate to 1khz
         Serial.println(mpu.getDLPFMode());
         // read gyro size rate of sample
         uint8_t gyroDivisionRate;
@@ -342,7 +343,7 @@ void MPUDeg_2_ServoDeg(int Xc, int Xnc)
         else if (Currentdeg >= Xc && Currentdeg < 180)
             situation = 4;
     }
-    else if (Xc < 0)
+    else
     {
         if (Currentdeg >= Xnc && Currentdeg < 180)
             situation = 1;
@@ -384,9 +385,9 @@ void MPUDeg_2_ServoDeg(int Xc, int Xnc)
             if (situation == 1 || situation == 4)
                 Currentdeg = -Currentdeg;
 
-    if (Currentdeg > 90) //puts the limits to the servo
+    if (Currentdeg > 90) // puts maximum limit to the servo
         Currentdeg = 90;
-    if (Currentdeg < -90)
+    if (Currentdeg < -90) // puts minimum limit to the servo
         Currentdeg = -90;
 
     Currentdeg = map(Currentdeg, -90, 90, 180, 0); // map the servo degrees to its readable variables
@@ -394,34 +395,28 @@ void MPUDeg_2_ServoDeg(int Xc, int Xnc)
 
 void mpu6050_get_data()
 {
-    // reset interrupt flag and get INT_STATUS byte
-    mpuInterrupt = false;
+
+    mpuInterrupt = false; // reset interrupt flag and get INT_STATUS byte
     mpuIntStatus = mpu.getIntStatus();
 
-    // get current FIFO count
-    fifoCount = mpu.getFIFOCount();
+    fifoCount = mpu.getFIFOCount(); // get current FIFO count
 
     // check for overflow (this should never happen unless our code is too inefficient)
     if ((mpuIntStatus & 0x10) || fifoCount >= 1024)
     {
-        // reset so we can continue cleanly
         Serial.printf("fifocount=%d\n", fifoCount);
-        mpu.resetFIFO();
+        mpu.resetFIFO(); // reset so we can continue cleanly
         delayMicroseconds(200);
         fifoCount = mpu.getFIFOCount();
         Serial.printf("after reset, fifocount=%d\n", fifoCount);
-        Serial.println(F("FIFO overflow!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"));
-
-        // otherwise, check for DMP data ready interrupt (this should happen frequently)
+        Serial.println(F("FIFO overflow!!!!!!"));
     }
-    else if (mpuIntStatus & 0x03)
-    { //FIXME check if this is really necessary
-        // wait for correct available data length, should be a VERY short wait
-        while (fifoCount < packetSize)
-            fifoCount = mpu.getFIFOCount();
+    else if (mpuIntStatus & 0x03)           // otherwise, check for DMP data ready interrupt (this should happen frequently) or mpu6050 data ready
+    {                                       //FIXME check if this is really necessary
+        while (fifoCount < packetSize)      // wait for correct available data length, should be a VERY short wait
+            fifoCount = mpu.getFIFOCount(); // update fifoCount
 
-        // read a packet from FIFO
-        mpu.getFIFOBytes(fifoBuffer, packetSize);
+        mpu.getFIFOBytes(fifoBuffer, packetSize); // read a packet from FIFO
 
         // track FIFO count here in case there is > 1 packet available
         // (this lets us immediately read more without waiting for an interrupt)
@@ -477,12 +472,12 @@ void send_data_rf24()
     if (hasHardware)
     { // Set in variables at top
         /*********************( Read the Joystick positions )*************************/
-        Currentdeg = ypr[0] * 180 / M_PI;
-        MPUDeg_2_ServoDeg(Xc_yaw, Xnc_yaw);
+        Currentdeg = ypr[0] * 180 / M_PI;   // switch radian to degree
+        MPUDeg_2_ServoDeg(Xc_yaw, Xnc_yaw); // fix servo odegree if needed
         myData.yaw = Currentdeg;
 
-        Currentdeg = ypr[1] * 180 / M_PI;
-        MPUDeg_2_ServoDeg(Xc_pitch, Xnc_pitch);
+        Currentdeg = ypr[1] * 180 / M_PI;       // switch radian to degree
+        MPUDeg_2_ServoDeg(Xc_pitch, Xnc_pitch); // fix servo odegree if needed
         myData.pitch = Currentdeg;
 
         //		myData.switchOn  = !digitalRead(RESET_YAW);  // Invert the pulldown switch
@@ -562,7 +557,7 @@ void setup()
 
     mpu6050_get_data();
 
-    Currentdeg = ypr[0] * 180 / M_PI;
+    Currentdeg = ypr[0] * 180 / M_PI; // switch radian to degree
     MPUDeg_2_ServoDeg(Xc_yaw, Xnc_yaw);
     ypr[0] = Currentdeg;
 
@@ -606,7 +601,7 @@ void loop()
     // wait for MPU interrupt or extra packet(s) available
     while (!mpuInterrupt && fifoCount < packetSize)
     {
-// other program behavior stuff here
+        // other program behavior stuff here
 #ifdef DEBUG
         Serial.printf("main loop -> fifocount=%d\n", fifoCount);
         Serial.printf("main loop -> mpu interrupt=%d\n", mpuInterrupt);
@@ -615,23 +610,23 @@ void loop()
         fifoCount = mpu.getFIFOCount();
     }
 
-    mpu6050_get_data();
+    mpu6050_get_data(); // get mpu6050 data
 
-    send_data_rf24();
-    delayMicroseconds(500);
+    send_data_rf24();       // send the data to RX thru nRF24l01p
+    delayMicroseconds(500); // wait for send
 
     //    while (Serial.available() && Serial.read()); // empty buffer
     if (digitalRead(calibration_button_pin) == 0) // check if button was pressed to calibrate
     {
-        //taking messure of current degree on the yaw axis
-        Xc_yaw = ypr[0] * 180 / M_PI;
+        //fixing messure of current degree on the yaw axis
+        Xc_yaw = ypr[0] * 180 / M_PI; // switch radian to degree
         if (Xc_yaw >= 0)
             Xnc_yaw = Xc_yaw - 180;
         else if (Xc_yaw < 0)
             Xnc_yaw = Xc_yaw + 180;
 
-        //taking messure of current degree on the pitch axis
-        Xc_pitch = ypr[1] * 180 / M_PI;
+        //fixing messure of current degree on the pitch axis
+        Xc_pitch = ypr[1] * 180 / M_PI; // switch radian to degree
         if (Xc_pitch >= 0)
             Xnc_pitch = Xc_pitch - 180;
         else if (Xc_pitch < 0)
