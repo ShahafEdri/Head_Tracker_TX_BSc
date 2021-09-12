@@ -333,8 +333,8 @@ void mpu6050_startup()
 void MPUDeg_2_ServoDeg(int Xc, int Xnc)
 {
     if (Xc >= 0)
-    { //checks which calibrations need to be performed
-        if (Currentdeg >= -180 && Currentdeg < Xnc)
+    {                                               //checks which calibrations need to be performed
+        if (Currentdeg >= -180 && Currentdeg < Xnc) //
             situation = 1;
         else if (Currentdeg >= Xnc && Currentdeg < 0)
             situation = 2;
@@ -357,23 +357,23 @@ void MPUDeg_2_ServoDeg(int Xc, int Xnc)
     switch (situation)
     { // puts the calibration in the right situation
     case 1:
-        //if positive calibration degree - current degree is between -180 and the opposite circular calibration degree (-180:Deg:Xnc)
-        //if negative calibration degree - current degree is between the opposite circular calibration degree and 180 (Xnc:Deg:180)
+        //if positive calibration degree -> current degree is between -180 and the opposite circular calibration degree (-180:Deg:Xnc)
+        //if negative calibration degree -> current degree is between the opposite circular calibration degree and 180 (Xnc:Deg:180)
         Currentdeg = abs(Xnc) + (180 - abs(Currentdeg));
         break;
     case 2:
-        //if positive calibration degree - current degree is between the opposite circular calibration degree and 0 (Xnc:Deg:0)
-        //if negative calibration degree - current degree is between 0 and the opposite circular calibration degree (0:Deg:Xnc)
+        //if positive calibration degree -> current degree is between the opposite circular calibration degree and 0 (Xnc:Deg:0)
+        //if negative calibration degree -> current degree is between 0 and the opposite circular calibration degree (0:Deg:Xnc)
         Currentdeg = abs(Xc) + abs(Currentdeg);
         break;
     case 3:
-        //if positive calibration degree - current degree is between 0 and the calibration degree (0:Deg:Xc)
-        //if negative calibration degree - current degree is between the calibration degree and 0 (Xc:Deg:0)
+        //if positive calibration degree -> current degree is between 0 and the calibration degree (0:Deg:Xc)
+        //if negative calibration degree -> current degree is between the calibration degree and 0 (Xc:Deg:0)
         Currentdeg = abs(Xc) - abs(Currentdeg);
         break;
     case 4:
-        //if positive calibration degree - current degree is between the calibration degree and 180 (Xc:Deg:180)
-        //if negative calibration degree - current degree is between -180 and the calibration degree (-180:Deg:Xc)
+        //if positive calibration degree -> current degree is between the calibration degree and 180 (Xc:Deg:180)
+        //if negative calibration degree -> current degree is between -180 and the calibration degree (-180:Deg:Xc)
         Currentdeg = abs(Currentdeg) - abs(Xc);
         break;
     }
@@ -525,6 +525,23 @@ void send_data_rf24()
     delayMicroseconds(500);
 }
 
+void calibrate_degrees() // calibrate the mpu6050
+{
+    //fixing messure of current degree on the yaw axis
+    Xc_yaw = ypr[0] * 180 / M_PI; // switch radian to degree
+    if (Xc_yaw >= 0)
+        Xnc_yaw = Xc_yaw - 180;
+    else if (Xc_yaw < 0)
+        Xnc_yaw = Xc_yaw + 180;
+
+    //fixing messure of current degree on the pitch axis
+    Xc_pitch = ypr[1] * 180 / M_PI; // switch radian to degree
+    if (Xc_pitch >= 0)
+        Xnc_pitch = Xc_pitch - 180;
+    else if (Xc_pitch < 0)
+        Xnc_pitch = Xc_pitch + 180;
+}
+
 // ================================================================
 // ===                      INITIAL SETUP                       ===
 // ================================================================
@@ -555,17 +572,13 @@ void setup()
 
     nrf24_startup(); //does alot of configurations for the NRF24 to be initialized correctly
 
-    mpu6050_get_data();
+    mpu6050_get_data(); // get the mpu6050 data
+
+    calibrate_degrees(); // calibrate the button
 
     Currentdeg = ypr[0] * 180 / M_PI; // switch radian to degree
     MPUDeg_2_ServoDeg(Xc_yaw, Xnc_yaw);
     ypr[0] = Currentdeg;
-
-    Xc_pitch = Currentdeg;
-    if (Xc_yaw >= 0)
-        Xnc_yaw = Xc_yaw - 180;
-    else if (Xc_yaw < 0)
-        Xnc_yaw = Xc_yaw + 180;
 
     // test conections
     while (radio.isChipConnected() == false)
@@ -618,19 +631,7 @@ void loop()
     //    while (Serial.available() && Serial.read()); // empty buffer
     if (digitalRead(calibration_button_pin) == 0) // check if button was pressed to calibrate
     {
-        //fixing messure of current degree on the yaw axis
-        Xc_yaw = ypr[0] * 180 / M_PI; // switch radian to degree
-        if (Xc_yaw >= 0)
-            Xnc_yaw = Xc_yaw - 180;
-        else if (Xc_yaw < 0)
-            Xnc_yaw = Xc_yaw + 180;
-
-        //fixing messure of current degree on the pitch axis
-        Xc_pitch = ypr[1] * 180 / M_PI; // switch radian to degree
-        if (Xc_pitch >= 0)
-            Xnc_pitch = Xc_pitch - 180;
-        else if (Xc_pitch < 0)
-            Xnc_pitch = Xc_pitch + 180;
+        calibrate_degrees();
     }
 // while (Serial.available() && Serial.read()); // empty buffer again
 #ifdef DEBUG
