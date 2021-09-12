@@ -234,13 +234,14 @@ void dmpDataReady()
 // initilize the mpu6050
 void mpu6050_startup()
 {
+    pinMode(INTERRUPT_PIN, INPUT); // set interrupt pin, to know wether the mpu6050 is ready
+
     // initialize device
     Serial.println(F("reseting MPU6050..."));
     mpu.reset();
     delay(50);
     Serial.println(F("Initializing I2C devices..."));
     mpu.initialize();
-    pinMode(INTERRUPT_PIN, INPUT); // set interrupt pin, to know wether the mpu6050 is ready
 
     // verify connection
     Serial.println(F("Testing device connections..."));
@@ -323,7 +324,6 @@ void mpu6050_startup()
         Serial.println(F(")"));
     }
     // configure LED for output
-    pinMode(LED_PIN, OUTPUT);
 }
 
 // a function that takes the mpu degree and
@@ -554,6 +554,7 @@ void setup()
 #endif
 
     pinMode(calibration_button_pin, INPUT_PULLUP);
+    pinMode(LED_PIN, OUTPUT);
 
     mpu6050_startup(); //does alot of configurations for the mpu6050 to be set correctly
 
