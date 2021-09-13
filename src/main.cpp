@@ -525,21 +525,21 @@ void send_data_rf24()
     delayMicroseconds(500);
 }
 
-void calibrate_degrees() // calibrate the mpu6050
+void calibrate_degrees() // calibrate the mpu6050 reading for later compensation for the servo
 {
     //fixing messure of current degree on the yaw axis
-    Xc_yaw = ypr[0] * 180 / M_PI; // switch radian to degree
+    Xc_yaw = ypr[0] * 180 / M_PI; // switch radian to degree and record the current degree for later compensation
     if (Xc_yaw >= 0)
-        Xnc_yaw = Xc_yaw - 180;
+        Xnc_yaw = Xc_yaw - 180; // record the current degree for later compensation
     else if (Xc_yaw < 0)
-        Xnc_yaw = Xc_yaw + 180;
+        Xnc_yaw = Xc_yaw + 180; // record the current degree for later compensation
 
     //fixing messure of current degree on the pitch axis
-    Xc_pitch = ypr[1] * 180 / M_PI; // switch radian to degree
+    Xc_pitch = ypr[1] * 180 / M_PI; // switch radian to degree and record the current degree for later compensation
     if (Xc_pitch >= 0)
-        Xnc_pitch = Xc_pitch - 180;
+        Xnc_pitch = Xc_pitch - 180; // record the current degree for later compensation
     else if (Xc_pitch < 0)
-        Xnc_pitch = Xc_pitch + 180;
+        Xnc_pitch = Xc_pitch + 180; // record the current degree for later compensation
 }
 
 // ================================================================
@@ -548,9 +548,7 @@ void calibrate_degrees() // calibrate the mpu6050
 
 void setup()
 {
-
-    // initialize serial communication
-    Serial.begin(115200);
+    Serial.begin(115200); // initialize serial communication
     while (!Serial)
         ; // wait for Leonardo enumeration, others continue immediately
     // NOTE: The "F" in the print statements means "unchangable data; save in Flash Memory to conserve SRAM"
@@ -574,11 +572,9 @@ void setup()
 
     mpu6050_get_data(); // get the mpu6050 data
 
-    calibrate_degrees(); // calibrate the button
+    calibrate_degrees(); // calibrate the mpu6050 readings to later compensate for the servo
 
-    Currentdeg = ypr[0] * 180 / M_PI; // switch radian to degree
-    MPUDeg_2_ServoDeg(Xc_yaw, Xnc_yaw);
-    ypr[0] = Currentdeg;
+    MPUDeg_2_ServoDeg(Xc_yaw, Xnc_yaw); // transform mpu6050 readings to servo readable values
 
     // test conections
     while (radio.isChipConnected() == false)
